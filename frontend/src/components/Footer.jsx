@@ -1,15 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faEnvelope, faPaperPlane, faPhone } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/logo.png';
 
 const Footer = () => {
+  const [userLocation, setUserLocation] = useState('Chennai, India');
   const socialLinks = [
     { icon: faInstagram, href: '#', label: 'Instagram' },
     { icon: faLinkedin, href: '#', label: 'LinkedIn' },
     { icon: faYoutube, href: '#', label: 'YouTube' },
   ];
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setUserLocation('Chennai, India');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+          );
+
+          const data = await response.json();
+
+          const area =
+            data.address?.suburb ||
+            data.address?.neighbourhood ||
+            data.address?.quarter ||
+            data.address?.city_district ||
+            data.address?.town ||
+            data.address?.village;
+
+          const city =
+            data.address?.city ||
+            data.address?.town ||
+            data.address?.village ||
+            data.address?.state_district;
+
+          setUserLocation(area && city ? `${area}, ${city}` : 'Chennai, India');
+        } catch (error) {
+          setUserLocation('Chennai, India');
+        }
+      },
+      () => {
+        setUserLocation('Chennai, India');
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
+  }, []);
 
   return (
     <footer className="bg-[#0f172a] text-slate-300 pt-10 pb-6">
@@ -91,7 +139,7 @@ const Footer = () => {
 
           <div className="flex gap-6">
             <span className="flex items-center gap-1">
-              <FontAwesomeIcon icon={faMapMarkerAlt} /> Chennai, India
+              <FontAwesomeIcon icon={faMapMarkerAlt} /> {userLocation}
             </span>
             <span className="flex items-center gap-1">
               <FontAwesomeIcon icon={faEnvelope} /> hello@dodoacademy.com
