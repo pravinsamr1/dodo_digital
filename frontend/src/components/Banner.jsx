@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGraduationCap, faStar, faRocket, faSchool, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faGraduationCap, faRocket, faSchool, faPhone } from '@fortawesome/free-solid-svg-icons';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 import banner from '../assets/banner.jpg';
@@ -12,7 +12,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 
 // Import required modules
-import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
+import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 
 const BannerSlider = () => {
   const slides = [
@@ -31,51 +31,81 @@ const BannerSlider = () => {
   ];
 
   return (
-    <div className="relative w-full h-[500px] overflow-hidden">
-      <Swiper
-        spaceBetween={0}
-        centeredSlides={true}
-        speed={2000} // This makes the transition smooth (1 second)
-        loop={true}
-        autoplay={{
-          delay: 4000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
-        modules={[Autoplay, Pagination, EffectFade]}
-        className="h-full"
-      >
-        {slides.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <div className="relative w-full h-full">
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black/40 z-10" />
-              
-              {/* Image */}
-              <img 
-                src={slide.image} 
-                alt={slide.title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-auto lg:h-[550px] overflow-hidden px-4 py-4 bg-slate-50">
+      {/* Left Main Slider */}
+      <div className="relative rounded-3xl overflow-hidden h-[350px] lg:h-full shadow-xl">
+        <Swiper
+          spaceBetween={0}
+          centeredSlides={true}
+          speed={2000}
+          loop={true}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Autoplay, Pagination, EffectFade]}
+          className="h-full"
+        >
+          {slides.map((slide) => (
+            <SwiperSlide key={slide.id}>
+              <div className="relative w-full h-full">
+                <div className="absolute inset-0 bg-black/40 z-10" />
 
-              {/* Content */}
-              <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center">
-                <h2 className="text-5xl font-bold mb-4 drop-shadow-lg leading-tight">
-                  {slide.title}
-                </h2>
-                <p className="text-xl opacity-90">
-                  {slide.subtitle}
-                </p>
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+
+                <div className="relative z-20 flex flex-col justify-center h-full text-white px-8 lg:px-14">
+                  <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full w-fit mb-5">
+                    <FontAwesomeIcon icon={faGraduationCap} />
+                    <span className="text-sm font-medium">Top Rated Schools</span>
+                  </div>
+
+                  <h2 className="text-4xl lg:text-3xl font-bold leading-tight mb-5 max-w-2xl">
+                    Find The Best Schools In Chennai
+                  </h2>
+
+                  <p className="text-base lg:text-lg text-slate-200 max-w-xl mb-8 leading-relaxed">
+                    Compare CBSE, Matriculation and International schools with reviews, ratings and admission details.
+                  </p>
+
+                  <div className="flex flex-wrap gap-4">
+                    <button className="bg-white text-slate-900 px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition-transform">
+                      Explore Schools
+                    </button>
+                  </div>
+                </div>
               </div>
-              
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {/* Right Side */}
+      <div className="grid grid-cols-1 gap-4 h-[350px] lg:h-full">
+        {/* Top Right Image */}
+        <div className="relative rounded-3xl overflow-hidden shadow-xl h-full min-h-[170px]">
+          <img
+            src="https://images.unsplash.com/photo-1503676382389-4809596d5290?q=80&w=1200&auto=format&fit=crop"
+            alt="Students"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Bottom Static Banner */}
+        <div className="relative rounded-3xl overflow-hidden shadow-xl h-full min-h-[170px]">
+          <img
+            src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop"
+            alt="School Campus"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+      </div>
     </div>
   );
 };
