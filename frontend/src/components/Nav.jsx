@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Search, MapPin, Phone } from 'lucide-react';
+import { Search, MapPin, ChevronDown } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 
 const Nav = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [userLocation, setUserLocation] = useState('Fetching...');
+  const [userLocation, setUserLocation] = useState('Chennai, India');
+  const [placeholderText, setPlaceholderText] = useState('');
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      setUserLocation('Location not supported');
+      setUserLocation('Chennai, India');
       return;
     }
 
@@ -21,7 +22,7 @@ const Nav = () => {
 
         try {
           const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
           );
 
           const data = await response.json();
@@ -29,26 +30,71 @@ const Nav = () => {
           const area =
             data.address?.suburb ||
             data.address?.neighbourhood ||
+            data.address?.quarter ||
             data.address?.city_district ||
-            data.address?.city ||
             data.address?.town ||
             data.address?.village;
 
           const city =
             data.address?.city ||
             data.address?.town ||
-            data.address?.state_district ||
-            data.address?.state;
+            data.address?.village ||
+            data.address?.state_district;
 
-          setUserLocation(area && city ? `${area}, ${city}` : 'Location Found');
+          setUserLocation(area && city ? `${area}, ${city}` : 'Exact location unavailable');
         } catch (error) {
-          setUserLocation('Unable to fetch');
+          setUserLocation('Chennai, India');
         }
       },
       (error) => {
-        setUserLocation('Permission denied');
+        setUserLocation('Chennai, India');
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
+  }, []);
+
+  useEffect(() => {
+    const texts = [
+      'Find the best CBSE schools...',
+      'Search schools near you...',
+      'Compare top schools...',
+      'Explore boarding schools...',
+    ];
+
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    const typeEffect = () => {
+      const currentText = texts[textIndex];
+
+      if (!isDeleting) {
+        setPlaceholderText(currentText.substring(0, charIndex + 1));
+        charIndex++;
+
+        if (charIndex === currentText.length) {
+          isDeleting = true;
+          setTimeout(typeEffect, 1500);
+          return;
+        }
+      } else {
+        setPlaceholderText(currentText.substring(0, charIndex - 1));
+        charIndex--;
+
+        if (charIndex === 0) {
+          isDeleting = false;
+          textIndex = (textIndex + 1) % texts.length;
+        }
+      }
+
+      setTimeout(typeEffect, isDeleting ? 40 : 80);
+    };
+
+    typeEffect();
   }, []);
 
   const menuItems = [
@@ -62,7 +108,7 @@ return (
     <header className="w-full flex flex-col bg-slate-100 font-sans sticky top-0 z-50">
       
       {/* ROW 1: Branding & Porimary Navigation */}
-      <div className="max-w-7xl mx-auto w-full px-6 h-16 flex items-center justify-between border-b border-gray-100">
+      <div className="max-w-8xl mx-auto w-full px-6 h-16 flex items-center justify-between border-b border-gray-100">
         <div className="flex items-center gap-12">
           {/* Brand Logo */}
           <img 
@@ -95,10 +141,30 @@ return (
             <MapPin size={18} strokeWidth={2.5} />
             <span className="text-sm font-medium">{userLocation}</span>
           </button>
-          <button className="flex items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100">
-            <Phone size={18} strokeWidth={2.5} />
-            <span className="text-sm font-medium">Contact Us</span>
-          </button>
+          <div className="relative group">
+            <button className="flex items-center gap-2 text-slate-600 hover:text-[#125fb9] px-4 py-2 rounded-xl transition-all hover:bg-slate-100 border border-slate-200 bg-white">
+              <span className="text-lg">🇮🇳</span>
+              <span className="text-sm font-medium">India</span>
+              <ChevronDown size={16} strokeWidth={2.5} className="transition-transform duration-300 group-hover:rotate-180" />
+            </button>
+
+            <div className="absolute right-0 top-full mt-3 w-44 bg-white border border-slate-200 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden">
+              <button className="w-full flex items-center gap-3 text-left px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                <span className="text-lg">🇮🇳</span>
+                India
+              </button>
+
+              <button className="w-full flex items-center gap-3 text-left px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
+                <span className="text-lg">🇸🇬</span>
+                Singapore
+              </button>
+
+              <button className="w-full flex items-center gap-3 text-left px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
+                <span className="text-lg">🇦🇪</span>
+                UAE
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -116,7 +182,7 @@ return (
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Find, Compare, Choose, Get Admitted..."
+              placeholder={placeholderText}
               className="w-full bg-white border border-[#dbdbdb] rounded-4xl py-3 pl-12 pr-40 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/5 transition-all text-slate-700  text-sm font-medium"
             />
 

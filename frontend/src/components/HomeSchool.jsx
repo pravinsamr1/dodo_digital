@@ -54,7 +54,7 @@ const SchoolLocationSection = () => {
           
           <div className="relative group">
             <button className="flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 rounded-xl text-sm font-bold hover:bg-indigo-100 transition-all duration-300 border border-indigo-100">
-              View All Schools
+              Filter By
               <ChevronDown size={18} className="transition-transform duration-300 group-hover:rotate-180" />
             </button>
 
