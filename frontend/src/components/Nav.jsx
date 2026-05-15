@@ -53,7 +53,7 @@ const Nav = () => {
   }, []);
 
   const menuItems = [
-    { name: 'Online Schools (NIOS)', badge: 'New', url: '/allschools' },
+    { name: 'Online Schools', badge: 'NIOS', url: '/allschools' },
     { name: 'Schools', url: '/boarding-schools' },
     { name: 'Colleges', url: '/junior-colleges' },
     { name: 'Online Courses', url: '/nios' },
@@ -64,7 +64,7 @@ return (
     <header className="w-full flex flex-col bg-slate-100 font-sans sticky top-0 z-50">
       
       {/* ROW 1: Branding & Porimary Navigation */}
-      <div className="max-w-7xl mx-auto w-full px-6 h-16 flex items-center justify-between border-b border-gray-100">
+      <div className="max-w-8xl mx-auto w-full px-6 h-16 flex items-center justify-between border-b border-gray-100">
         <div className="flex items-center gap-12">
           {/* Brand Logo */}
           <img 

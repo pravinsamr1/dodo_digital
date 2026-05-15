@@ -31,9 +31,9 @@ const BannerSlider = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-auto lg:h-[550px] overflow-hidden px-4 py-4 bg-slate-50">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-auto lg:h-[550px] overflow-hidden px-4 py-4 bg-slate-50">
       {/* Left Main Slider */}
-      <div className="relative rounded-3xl overflow-hidden h-[350px] lg:h-full shadow-xl">
+      <div className="relative rounded-3xl overflow-hidden h-[350px] lg:h-full shadow-xl lg:col-span-8">
         <Swiper
           spaceBetween={0}
           centeredSlides={true}
@@ -87,7 +87,7 @@ const BannerSlider = () => {
       </div>
 
       {/* Right Side */}
-      <div className="grid grid-cols-1 gap-4 h-[350px] lg:h-full">
+      <div className="grid grid-cols-1 gap-4 h-[350px] lg:h-full lg:col-span-4">
         {/* Top Right Image */}
         <div className="relative rounded-3xl overflow-hidden shadow-xl h-full min-h-[170px]">
           <img
