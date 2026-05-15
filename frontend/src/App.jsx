@@ -4,20 +4,22 @@ import Home from './Pages/Home'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import AllSchool from './Pages/AllSchool'
+import SchoolDetail from './Pages/SchoolDetail'
+import { LocationProvider } from './context/LocationContext'
 
 const App = () => {
   return (
-    <div> 
-
+    <LocationProvider>
       <Router>
       <Nav/>
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/allschools" element={<AllSchool/>} />
+          <Route path="/schools/:id" element={<SchoolDetail/>} />
         </Routes>
       </Router>
       <Footer/>
-    </div>
+    </LocationProvider>
   )
 }
 

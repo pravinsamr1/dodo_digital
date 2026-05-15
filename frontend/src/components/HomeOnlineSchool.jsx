@@ -1,56 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import { MapPin, Star, ChevronDown } from 'lucide-react';
 
-const CollegeLocationSection = () => {
+const HomeOnlineSchool = () => {
   const [userCoords, setUserCoords] = useState({
     latitude: 13.0827,
     longitude: 80.2707,
   });
 
-  const colleges = [
+  const schools = [
     {
       id: 1,
-      name: "Loyola College",
-      location: "Chennai, India",
+      name: "St. Xavier's International",
+      location: "Upper East Side, NY",
       rating: 4.8,
-      type: "Arts & Science",
-      courses: "UG - PG",
-      image: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&q=80&w=600",
-      latitude: 13.0620,
-      longitude: 80.2345
+      type: "CBSE",
+      classes: "Pre - 12",
+      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600"
+      ,
+      latitude: 13.0878,
+      longitude: 80.2785
     },
     {
       id: 2,
-      name: "Madras Christian College",
-      location: "Tambaram, Chennai",
+      name: "Greenwood High School",
+      location: "Austin, Texas",
       rating: 4.9,
-      type: "Autonomous",
-      courses: "UG - PG",
-      image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=600",
-      latitude: 12.9216,
-      longitude: 80.1214
+      type: "Matriculation",
+      classes: "Pre - 10",
+      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600"
+      ,
+      latitude: 13.0500,
+      longitude: 80.2121
     },
     {
       id: 3,
-      name: "SRM Institute of Science",
-      location: "Kattankulathur, Chennai",
+      name: "Oakridge Junior College",
+      location: "San Francisco, CA",
       rating: 4.7,
-      type: "Engineering",
-      courses: "UG - PhD",
-      image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=600",
-      latitude: 12.8230,
-      longitude: 80.0444
+      type: "CBSE",
+      classes: "Pre - 5",
+      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600"
+      ,
+      latitude: 13.0330,
+      longitude: 80.2456
     },
     {
       id: 4,
-      name: "Stella Maris College",
-      location: "Teynampet, Chennai",
+      name: "Delhi Public School",
+      location: "Chennai, India",
       rating: 4.6,
-      type: "Women's College",
-      courses: "UG - PG",
-      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=600",
-      latitude: 13.0446,
-      longitude: 80.2534
+      type: "Matriculation",
+      classes: "Pre - 12",
+      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600"
+      ,
+      latitude: 13.1067,
+      longitude: 80.2206
     }
   ];
 
@@ -92,14 +96,14 @@ const CollegeLocationSection = () => {
   };
 
   return (
-    <section className="py-12 bg-white">
+    <section className="py-12 bg-[#f1f5f9]">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header with View All Button */}
         <div className="flex items-end justify-between mb-12">
           <div>
             <h2 className="text-3xl font-black text-slate-900 mb-3 font-medium">
-              Top Colleges Near You
+              Online Schools (NIOS)
             </h2>
             <p className="text-slate-500 font-medium">
               Explore the highest-rated educational institutions in your current location.
@@ -114,44 +118,48 @@ const CollegeLocationSection = () => {
 
             <div className="absolute right-0 top-full mt-3 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden">
               <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-                Engineering
+                CBSE
               </button>
 
               <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
-                Arts & Science
+                Matriculation
               </button>
 
               <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
-                All Colleges
+                All NIOS Schools
+              </button>
+
+              <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
+                All Online Schools
               </button>
             </div>
           </div>
         </div>
 
-        {/* Colleges Grid */}
+        {/* Schools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {colleges.map((college) => {
+          {schools.map((school) => {
             const distance = calculateDistance(
               userCoords.latitude,
               userCoords.longitude,
-              college.latitude,
-              college.longitude
+              school.latitude,
+              school.longitude
             );
             return (
             <div 
-              key={college.id} 
+              key={school.id} 
               className="group cursor-pointer bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:-translate-y-2"
             >
               {/* Image Container */}
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src={college.image} 
-                  alt={college.name}
+                  src={school.image} 
+                  alt={school.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-800 shadow-sm">
-                    {college.type}
+                    {school.type}
                   </span>
                 </div>
               </div>
@@ -161,27 +169,27 @@ const CollegeLocationSection = () => {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-1 text-amber-500">
                     <Star size={16} fill="currentColor" />
-                    <span className="text-sm font-bold text-slate-700">{college.rating}</span>
+                    <span className="text-sm font-bold text-slate-700">{school.rating}</span>
 
                     <div className="text-xs font-bold bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full whitespace-nowrap">
-                      {distance} km
-                    </div>
+                    {distance} km
+                  </div>
                   </div>
                   <div className="flex items-center gap-1 text-slate-400">
                     <span className="text-xs font-bold bg-slate-100 text-slate-700 px-3 py-1 rounded-full">
-                      {college.courses}
+                      {school.classes}
                     </span>
                   </div>
                 </div>
 
                 <h4 className="text-[16px] font-[500] text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">
-                  {college.name}
+                  {school.name}
                 </h4>
                 
                 <div className="flex items-center justify-between text-slate-500 mb-6">
                   <div className="flex items-center gap-2 overflow-hidden">
                     <MapPin size={14} className="shrink-0" />
-                    <span className="text-sm truncate">{college.location}</span>
+                    <span className="text-sm truncate">{school.location}</span>
                   </div>
                 </div>
 
@@ -198,4 +206,4 @@ const CollegeLocationSection = () => {
   );
 };
 
-export default CollegeLocationSection;
+export default HomeOnlineSchool;

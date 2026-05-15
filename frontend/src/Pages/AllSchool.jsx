@@ -1,110 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Share2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import SchoolFilter from '../components/SchoolFilter';
+import { schools } from '../data/schools';
 
 const AllSchool = () => {
-  const [schools] = useState([
-    {
-      _id: '1',
-      name: "St. Xavier's International",
-      location: "Chennai, India",
-      rating: 4.8,
-      type: "Boarding",
-      image: "https://images.unsplash.com/photo-1541339907198-e08756defe03?w=600"
-    },
-    {
-      _id: '2',
-      name: "Greenwood High School",
-      location: "Bangalore, India",
-      rating: 4.7,
-      type: "Day School",
-      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600"
-    },
-    {
-      _id: '3',
-      name: "Delhi Public School",
-      location: "Delhi, India",
-      rating: 4.6,
-      type: "CBSE",
-      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600"
-    },
-    {
-      _id: '4',
-      name: "Oxford International School",
-      location: "Mumbai, India",
-      rating: 4.9,
-      type: "International",
-      image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600"
-    }
-  ]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const schoolsPerPage = 10;
+
+  const indexOfLastSchool = currentPage * schoolsPerPage;
+  const indexOfFirstSchool = indexOfLastSchool - schoolsPerPage;
+
+  const currentSchools = schools.slice(0, indexOfLastSchool);
+
+  const totalPages = Math.ceil(schools.length / schoolsPerPage);
+  useEffect(()=>{
+    document.title = "All Schools - SchoolFinder";
+    window.scrollTo(0,0);
+  }, [])
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10">
-      <div className="max-w-[1400px] mx-auto px-6">
-        <h1 className="text-3xl font-bold mb-8 text-slate-800">
-          All Schools
-        </h1>
-        <div className="flex gap-6">
-        <div className="w-72 bg-white rounded-2xl shadow-sm p-5 space-y-6 border border-slate-100 sticky top-24 h-fit">
+    <div className="min-h-screen bg-slate-50 pb-10">
+      <div
+        className="relative mb-10 h-34 overflow-hidden bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80&w=1600')",
+        }}
+      >
+        <div className="absolute inset-0 bg-slate-950/70" />
+        <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
+          <h1 className="text-3xl font-bold text-white md:text-5xl">
+            All Schools
+          </h1>
+        </div>
+      </div>
 
-          {/* Header */}
-          <div className="flex justify-between items-center">
-            <h2 className="font-semibold text-slate-700">Filters</h2>
-            <button className="text-sm text-[#125fb9]">Clear all</button>
-          </div>
-
-          {/* Category */}
-          <div className="space-y-2">
-            <p className="text-sm text-slate-500">Category</p>
-            <select className="w-full bg-slate-100 rounded-xl p-2 text-sm">
-              <option>Day School</option>
-              <option>Boarding</option>
-              <option>International</option>
-            </select>
-          </div>
-
-          {/* Location */}
-          <div className="space-y-2">
-            <p className="text-sm text-slate-500">Location</p>
-            <input
-              type="text"
-              placeholder="Enter city"
-              className="w-full bg-slate-100 rounded-xl p-2 text-sm outline-none"
-            />
-          </div>
-
-          {/* Distance */}
-          <div className="space-y-2">
-            <p className="text-sm text-slate-500">Distance</p>
-            <input type="range" min="0" max="30" className="w-full" />
-          </div>
-
-          {/* Fees */}
-          <div className="space-y-2">
-            <p className="text-sm text-slate-500">Fees</p>
-            <input type="range" min="500" max="500000" className="w-full" />
-          </div>
-
-          {/* Board */}
-          <div className="space-y-2">
-            <p className="text-sm text-slate-500">Board</p>
-            {['CBSE','IB','STATE','ICSE','IGCSE'].map((b)=>(
-              <label key={b} className="flex items-center gap-2 text-sm">
-                <input type="checkbox" /> {b}
-              </label>
-            ))}
-          </div>
-
-          <button className="w-full bg-[#125fb9] text-white py-2 rounded-xl text-sm">
-            Apply
-          </button>
-
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+        <div className="flex flex-col gap-6 lg:flex-row">
+        <div className="lg:w-72 lg:shrink-0">
+          <SchoolFilter />
         </div>
 
-        <div className="flex-1 h-[calc(100vh-140px)] overflow-y-auto pr-2">
+        <div className="min-w-0 flex-1 lg:pr-2">
         {schools.length === 0 ? (
           <p>No schools found.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {schools.map((school) => (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
+            {currentSchools.map((school) => (
               <div
                 key={school._id}
                 className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-all border border-slate-100"
@@ -126,8 +70,17 @@ const AllSchool = () => {
                     </span>
                   </div>
 
-                  <div className="absolute bottom-2 left-3 text-white text-xs bg-black/50 px-2 py-1 rounded">
-                    👁 41.2k
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                    <span className="rounded-md bg-[#a0083d] px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-[#a0083d]/25">
+                      Managed by School
+                    </span>
+                    <button
+                      type="button"
+                      aria-label={`Share ${school.name}`}
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-sm backdrop-blur-sm transition-all hover:bg-[#125fb9] hover:text-white"
+                    >
+                      <Share2 size={16} />
+                    </button>
                   </div>
                 </div>
 
@@ -135,35 +88,44 @@ const AllSchool = () => {
                 <div className="p-4 space-y-3">
 
                   {/* TITLE */}
-                  <h2 className="text-lg font-semibold text-slate-800">
-                    {school.name}
-                  </h2>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(school.name)}&background=125fb9&color=ffffff&bold=true&size=96`}
+                      alt={`${school.name} logo`}
+                      className="h-12 w-12 shrink-0 rounded-xl border border-slate-100 object-cover shadow-sm"
+                    />
+                    <h2 className="text-base font-semibold text-slate-800 sm:text-lg">
+                      {school.name}
+                    </h2>
+                  </div>
 
-                  <p className="text-sm text-slate-500">
-                    {school.location}
-                  </p>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                    <p className="truncate text-sm text-slate-500">
+                      {school.location}
+                    </p>
 
-                  {/* RATING */}
-                  <div className="flex items-center gap-2 text-yellow-500 text-sm">
-                    {'★★★★★'.slice(0, Math.round(school.rating))}
-                    <span className="text-slate-500">{school.rating}</span>
+                    {/* RATING */}
+                    <div className="flex shrink-0 items-center gap-2 text-sm text-yellow-500">
+                      {'★★★★★'.slice(0, Math.round(school.rating))}
+                      <span className="text-slate-500">{school.rating}</span>
+                    </div>
                   </div>
 
                   {/* FEES BAR */}
                   <div className="bg-green-600 text-white text-center py-2 rounded-lg text-sm font-medium">
-                    Fees - ₹10,60,000 / per annum
+                    Fees - ₹{school.dayFee} / per annum
                   </div>
 
                   {/* DETAILS GRID */}
-                  <div className="grid grid-cols-2 gap-2 text-xs border rounded-lg overflow-hidden">
+                  <div className="grid grid-cols-2 gap-2 text-xs border border-[#dbdbdb] rounded-lg overflow-hidden">
                     <div className="bg-slate-50 p-2">School type</div>
                     <div className="p-2 font-medium">{school.type}</div>
                     <div className="bg-slate-50 p-2">Board</div>
-                    <div className="p-2 font-medium">CBSE</div>
+                    <div className="p-2 font-medium">{school.board}</div>
                     <div className="bg-slate-50 p-2">Gender</div>
-                    <div className="p-2 font-medium">Co-Ed</div>
+                    <div className="p-2 font-medium">{school.gender}</div>
                     <div className="bg-slate-50 p-2">Grade</div>
-                    <div className="p-2 font-medium">LKG - 12</div>
+                    <div className="p-2 font-medium">{school.grade}</div>
                   </div>
 
                   {/* DESCRIPTION */}
@@ -172,18 +134,64 @@ const AllSchool = () => {
                   </p>
 
                   {/* ACTION BUTTONS */}
-                  <div className="flex gap-2 pt-2">
+                  <div className="flex flex-col gap-2 pt-2 sm:flex-row">
                     <button className="flex-1 bg-slate-200 text-slate-700 py-2 rounded-lg text-sm">
                       Get a Call
                     </button>
-                    <button className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm">
+                    <Link
+                      to={`/schools/${school._id}`}
+                      className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm text-center"
+                    >
                       View School
-                    </button>
+                    </Link>
                   </div>
 
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* PAGINATION */}
+        {schools.length > schoolsPerPage && (
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => {
+                const previousPage = Math.max(currentPage - 1, 1);
+                setCurrentPage(previousPage);
+              }}
+              disabled={currentPage === 1}
+              className="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Previous
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setCurrentPage(index + 1);
+                }}
+                className={`h-10 w-10 rounded-xl text-sm font-semibold transition-all ${
+                  currentPage === index + 1
+                    ? 'bg-[#125fb9] text-white shadow-lg shadow-[#125fb9]/20'
+                    : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() => {
+                const nextPage = Math.min(currentPage + 1, totalPages);
+                setCurrentPage(nextPage);
+              }}
+              disabled={currentPage === totalPages}
+              className="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Next
+            </button>
           </div>
         )}
         </div>

@@ -1,41 +1,99 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapPin, Star, ChevronDown } from 'lucide-react';
 
 const SchoolLocationSection = () => {
+  const [userCoords, setUserCoords] = useState({
+    latitude: 13.0827,
+    longitude: 80.2707,
+  });
+
   const schools = [
     {
       id: 1,
       name: "St. Xavier's International",
       location: "Upper East Side, NY",
       rating: 4.8,
-      type: "Boarding",
+      type: "CBSE",
+      classes: "Pre - 12",
       image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600"
+      ,
+      latitude: 13.0878,
+      longitude: 80.2785
     },
     {
       id: 2,
       name: "Greenwood High School",
       location: "Austin, Texas",
       rating: 4.9,
-      type: "Day School",
+      type: "Matriculation",
+      classes: "Pre - 10",
       image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600"
+      ,
+      latitude: 13.0500,
+      longitude: 80.2121
     },
     {
       id: 3,
       name: "Oakridge Junior College",
       location: "San Francisco, CA",
       rating: 4.7,
-      type: "Junior College",
+      type: "CBSE",
+      classes: "Pre - 5",
       image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600"
+      ,
+      latitude: 13.0330,
+      longitude: 80.2456
     },
     {
       id: 4,
       name: "Delhi Public School",
       location: "Chennai, India",
       rating: 4.6,
-      type: "Day School",
+      type: "Matriculation",
+      classes: "Pre - 12",
       image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600"
+      ,
+      latitude: 13.1067,
+      longitude: 80.2206
     }
   ];
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserCoords({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      () => {
+        setUserCoords({
+          latitude: 13.0827,
+          longitude: 80.2707,
+        });
+      }
+    );
+  }, []);
+
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371;
+
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return (R * c).toFixed(1);
+  };
 
   return (
     <section className="py-12 bg-white">
@@ -76,7 +134,14 @@ const SchoolLocationSection = () => {
 
         {/* Schools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {schools.map((school) => (
+          {schools.map((school) => {
+            const distance = calculateDistance(
+              userCoords.latitude,
+              userCoords.longitude,
+              school.latitude,
+              school.longitude
+            );
+            return (
             <div 
               key={school.id} 
               className="group cursor-pointer bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:-translate-y-2"
@@ -101,28 +166,36 @@ const SchoolLocationSection = () => {
                   <div className="flex items-center gap-1 text-amber-500">
                     <Star size={16} fill="currentColor" />
                     <span className="text-sm font-bold text-slate-700">{school.rating}</span>
+
+                    <div className="text-xs font-bold bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full whitespace-nowrap">
+                    {distance} km
+                  </div>
                   </div>
                   <div className="flex items-center gap-1 text-slate-400">
-                    <MapPin size={14} />
-                    <span className="text-xs font-medium">{school.location.split(',')[1]}</span>
+                    <span className="text-xs font-bold bg-slate-100 text-slate-700 px-3 py-1 rounded-full">
+                      {school.classes}
+                    </span>
                   </div>
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                <h4 className="text-[16px] font-[500] text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">
                   {school.name}
-                </h3>
+                </h4>
                 
-                <div className="flex items-center gap-2 text-slate-500 mb-6">
-                  <MapPin size={14} className="shrink-0" />
-                  <span className="text-sm truncate">{school.location}</span>
+                <div className="flex items-center justify-between text-slate-500 mb-6">
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    <MapPin size={14} className="shrink-0" />
+                    <span className="text-sm truncate">{school.location}</span>
+                  </div>
                 </div>
 
-                <button className="w-full py-3 bg-[#a0083d] text-white font-bold text-sm rounded-xl hover:bg-[#8a0734] transition-all duration-300">
+                <button className="w-full py-3 bg-[#a0083d] text-white font-[500] text-sm rounded-xl hover:bg-[#8a0734] transition-all duration-300">
                   View Details
                 </button>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
