@@ -57,6 +57,7 @@ const Nav = () => {
     { name: 'Schools', url: '/boarding-schools' },
     { name: 'Colleges', url: '/junior-colleges' },
     { name: 'Online Courses', url: '/nios' },
+    { name: 'Online Courses', url: '/nios' },
   ];
 
 return (
