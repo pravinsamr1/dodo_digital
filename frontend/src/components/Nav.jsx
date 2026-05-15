@@ -1,16 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Search, MapPin, ChevronDown, Menu, X } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { useUserLocation } from '../context/LocationContext';
+import { useAuthModal } from '../context/AuthModalContext';
 
 const Nav = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [placeholderText, setPlaceholderText] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCountryOpen, setIsCountryOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState({
+    name: 'India',
+    flag: '🇮🇳',
+  });
+  const countryDropdownRef = useRef(null);
   const { userLocation } = useUserLocation();
+  const { openLoginModal } = useAuthModal();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        countryDropdownRef.current &&
+        !countryDropdownRef.current.contains(event.target)
+      ) {
+        setIsCountryOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const texts = [
@@ -53,11 +78,15 @@ const Nav = () => {
   }, []);
 
   const menuItems = [
-    { name: 'Online Schools', badge: 'NIOS', url: '/allschools' },
-    { name: 'Schools', url: '/boarding-schools' },
+    { name: 'Online Schools', badge: 'NIOS', url: '/online-schools' },
+    { name: 'Schools', url: '/allschools' },
     { name: 'Colleges', url: '/junior-colleges' },
-    { name: 'Online Courses', url: '/nios' },
-    { name: 'Online Courses', url: '/nios' },
+    { name: 'Online Courses', url: '/online-courses' },
+    { name: 'Academic Classes', url: '/academic-classes' },
+  ];
+
+  const countries = [
+    { name: 'India', flag: '🇮🇳' },
   ];
 
 return (
@@ -78,11 +107,11 @@ return (
             {menuItems.map((item) => (
               <button 
                 key={item.name}
-                className="group px-4 py-2 text-[14px] cursor-pointer font-bold text-slate-600 hover:text-indigo-600 rounded-xl transition-all flex items-center gap-2" onClick={() => item.url && navigate(item.url)}
+                className="group px-4 py-2 text-[15px] cursor-pointer font-[600] text-slate-600 hover:text-indigo-600 rounded-xl transition-all flex items-center gap-2" onClick={() => item.url && navigate(item.url)}
               >
                 {item.name}
                 {item.badge && (
-                  <span className="text-[9px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-md uppercase tracking-wider font-black">
+                  <span className="text-[12px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-md uppercase tracking-wider font-black">
                     {item.badge}
                   </span>
                 )}
@@ -97,30 +126,6 @@ return (
             <MapPin size={18} strokeWidth={2.5} />
             <span className="text-sm font-medium">{userLocation}</span>
           </button>
-          <div className="relative hidden group sm:block">
-            <button className="flex items-center gap-2 text-slate-600 hover:text-[#125fb9] px-4 py-2 rounded-xl transition-all hover:bg-slate-100 border border-slate-200 bg-white">
-              <span className="text-lg">🇮🇳</span>
-              <span className="text-sm font-medium">India</span>
-              <ChevronDown size={16} strokeWidth={2.5} className="transition-transform duration-300 group-hover:rotate-180" />
-            </button>
-
-            <div className="absolute right-0 top-full mt-3 w-44 bg-white border border-slate-200 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden">
-              <button className="w-full flex items-center gap-3 text-left px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-                <span className="text-lg">🇮🇳</span>
-                India
-              </button>
-
-              <button className="w-full flex items-center gap-3 text-left px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
-                <span className="text-lg">🇸🇬</span>
-                Singapore
-              </button>
-
-              <button className="w-full flex items-center gap-3 text-left px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
-                <span className="text-lg">🇦🇪</span>
-                UAE
-              </button>
-            </div>
-          </div>
 
           <button
             type="button"
@@ -201,11 +206,55 @@ return (
 
           {/* Authentication Actions */}
           <div className="hidden items-center gap-3 w-full md:flex md:w-auto">
-            <button className="flex-1 md:flex-none px-10 py-2.5 text-sm font-bold text-[#125fb9] border-[2px] border-[#125fb9] rounded-4xl transition-all hover:bg-[#125fb9] hover:text-white">
-              Login
+
+            <div
+              ref={countryDropdownRef}
+              className="relative hidden sm:block"
+            >
+            <button
+              type="button"
+              onClick={() => setIsCountryOpen((prev) => !prev)}
+              className="flex items-center gap-2 text-slate-600 hover:text-[#125fb9] px-4 py-2 rounded-4xl transition-all hover:bg-slate-100 border border-slate-200 bg-white"
+            >
+              <span className="text-lg">{selectedCountry.flag}</span>
+              <span className="text-sm font-medium">{selectedCountry.name}</span>
+              <ChevronDown
+                size={16}
+                strokeWidth={2.5}
+                className={`transition-transform duration-300 ${isCountryOpen ? 'rotate-180' : ''}`}
+              />
             </button>
-            <button className="flex-1 md:flex-none bg-[#a0083d] text-white px-10 py-3 rounded-4xl text-sm font-bold  hover:bg-[#8a0734] transition-all active:scale-[0.98]">
-              Sign Up
+
+            <div
+              className={`absolute right-0 top-full mt-3 w-44 bg-white border border-slate-200 rounded-4xl shadow-xl transition-all duration-300 z-50 overflow-hidden ${
+                isCountryOpen
+                  ? 'opacity-100 visible translate-y-0'
+                  : 'opacity-0 invisible -translate-y-2'
+              }`}
+            >
+              {countries.map((country, index) => (
+                <button
+                  key={country.name}
+                  onClick={() => {
+                    setSelectedCountry(country);
+                    setIsCountryOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 text-left px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors ${
+                    index !== 0 ? 'border-t border-slate-100' : ''
+                  }`}
+                >
+                  <span className="text-lg">{country.flag}</span>
+                  {country.name}
+                </button>
+              ))}
+            </div>
+          </div>
+            <button
+              type="button"
+              onClick={() => openLoginModal()}
+              className="flex-1 md:flex-none bg-[#a0083d] text-white px-10 py-3 rounded-4xl text-[15px] font-[500]  hover:bg-[#8a0734] transition-all active:scale-[0.98]"
+            >
+              Login
             </button>
           </div>
         </div>

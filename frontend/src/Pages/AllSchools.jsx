@@ -6,7 +6,7 @@ import { useAuthModal } from '../context/AuthModalContext';
 import PageSEO from '../components/PageSEO';
 import { seoPages } from '../config/seo';
 
-const AllSchool = () => {
+const AllSchools = () => {
   const { openLoginModal } = useAuthModal();
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -24,7 +24,7 @@ const AllSchool = () => {
 
   return (
     <>
-      <PageSEO {...seoPages.onlineSchools} />
+      <PageSEO {...seoPages.allSchools} />
     <div className="min-h-screen bg-slate-50 pb-10">
       <div
         className="relative mb-10 h-34 overflow-hidden bg-cover bg-center"
@@ -36,7 +36,7 @@ const AllSchool = () => {
         <div className="absolute inset-0 bg-slate-950/70" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <h1 className="text-3xl font-[500] text-white md:text-5xl">
-            Online Schools (NIOS)
+            All Schools
           </h1>
         </div>
       </div>
@@ -142,14 +142,14 @@ const AllSchool = () => {
                     <button
                       type="button"
                       onClick={() => openLoginModal(school._id)}
-                      className="flex-1 bg-slate-200 text-slate-700 py-2 rounded-lg text-sm cursor-pointer"
+                      className="flex-1 bg-slate-200 text-slate-700 py-2 rounded-lg text-sm"
                     >
                       Get a Call
                     </button>
                     <button
                       type="button"
                       onClick={() => openLoginModal(school._id)}
-                      className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm cursor-pointer"
+                      className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm"
                     >
                       View School
                     </button>
@@ -211,4 +211,4 @@ const AllSchool = () => {
   );
 };
 
-export default AllSchool; 
+export default AllSchools; 

@@ -6,19 +6,32 @@ import Footer from './components/Footer'
 import AllSchool from './Pages/AllSchool'
 import SchoolDetail from './Pages/SchoolDetail'
 import { LocationProvider } from './context/LocationContext'
+import { AuthModalProvider } from './context/AuthModalContext'
+import LoginModal from './components/LoginModal'
+import AllSchools from './Pages/AllSchools'
+import AllColleges from './Pages/AllColleges'
+import AllOnlineCourses from './Pages/AllOnlineCourses'
+import AllAcademicClasses from './Pages/AllAcademicClasses'
 
 const App = () => {
   return (
     <LocationProvider>
-      <Router>
-      <Nav/>
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/allschools" element={<AllSchool/>} />
-          <Route path="/schools/:id" element={<SchoolDetail/>} />
-        </Routes>
-      </Router>
-      <Footer/>
+      <AuthModalProvider>
+        <Router>
+          <Nav />
+          <LoginModal />
+          <Routes>
+            <Route path="/" element={<Home/>} />
+            <Route path="/online-schools" element={<AllSchool/>} />
+            <Route path="/allschools" element={<AllSchools/>} />
+            <Route path="/junior-colleges" element={<AllColleges/>} />
+            <Route path="/online-courses" element={<AllOnlineCourses/>} />
+            <Route path="/academic-classes" element={<AllAcademicClasses/>} />
+            <Route path="/schools/:id" element={<SchoolDetail/>} />
+          </Routes>
+        </Router>
+        <Footer />
+      </AuthModalProvider>
     </LocationProvider>
   )
 }

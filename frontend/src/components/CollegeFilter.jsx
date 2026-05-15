@@ -2,26 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { Check, ChevronDown, MapPin } from 'lucide-react';
 import { useUserLocation } from '../context/LocationContext';
 
-const SchoolFilter = () => {
-  const [category, setCategory] = useState('Day School');
-  const [selectedBoard, setSelectedBoard] = useState('CBSE');
-  const [gender, setGender] = useState('Co-education');
+const CollegeFilter = () => {
+  const [program, setProgram] = useState('UG - PG');
+  const [selectedStream, setSelectedStream] = useState('Engineering');
+  const [collegeType, setCollegeType] = useState('Private');
   const [location, setLocation] = useState('');
   const [isLocationEdited, setIsLocationEdited] = useState(false);
   const [distance, setDistance] = useState(15);
-  const [fees, setFees] = useState(250000);
+  const [fees, setFees] = useState(150000);
   const { isLocationLoading, userLocation } = useUserLocation();
 
-  // Dynamic filter data (replace with API/context data later)
   const filterOptions = {
-    boards: ['CBSE', 'IB', 'STATE', 'ICSE', 'IGCSE'],
-    genders: ['Boys', 'Girls', 'Co-education'],
-    categories: ['Day School', 'Boarding', 'International', 'Government Schools'],
+    streams: [
+      'Engineering',
+      'Arts & Science',
+      'Commerce',
+      'Medical',
+      'Law',
+      'Management',
+    ],
+    collegeTypes: ['Government', 'Private', 'Autonomous', 'Deemed University'],
+    programs: ['UG', 'PG', 'UG - PG', 'Integrated', 'PhD'],
   };
-
-  // Future backend integration example:
-  // const { filterOptions } = useSchoolFilterContext();
-  // or fetch from API and update dynamically
 
   useEffect(() => {
     if (!isLocationLoading && !isLocationEdited) {
@@ -37,13 +39,13 @@ const SchoolFilter = () => {
     }).format(amount);
 
   const clearFilters = () => {
-    setCategory('Day School');
-    setSelectedBoard('CBSE');
-    setGender('Co-education');
+    setProgram('UG - PG');
+    setSelectedStream('Engineering');
+    setCollegeType('Private');
     setLocation(userLocation);
     setIsLocationEdited(false);
     setDistance(15);
-    setFees(250000);
+    setFees(150000);
   };
 
   return (
@@ -59,18 +61,15 @@ const SchoolFilter = () => {
         </button>
       </div>
 
-
-      
-
       <div className="space-y-2 pt-5">
-        <p className="text-sm text-slate-500">Board</p>
+        <p className="text-sm text-slate-500">Stream</p>
         <div className="grid grid-cols-1 gap-2">
-          {filterOptions.boards.map((board) => {
-            const isSelected = selectedBoard === board;
+          {filterOptions.streams.map((stream) => {
+            const isSelected = selectedStream === stream;
 
             return (
               <label
-                key={board}
+                key={stream}
                 className={`flex cursor-pointer items-center gap-3 rounded-md border px-4 py-1 text-sm font-semibold transition-all duration-300 ${
                   isSelected
                     ? 'border-[#125fb9] bg-[#125fb9]/10 text-[#125fb9] shadow-sm'
@@ -79,9 +78,9 @@ const SchoolFilter = () => {
               >
                 <input
                   type="radio"
-                  name="school-board"
+                  name="college-stream"
                   checked={isSelected}
-                  onChange={() => setSelectedBoard(board)}
+                  onChange={() => setSelectedStream(stream)}
                   className="sr-only"
                 />
                 <span
@@ -93,7 +92,7 @@ const SchoolFilter = () => {
                 >
                   {isSelected && <Check size={13} strokeWidth={3} />}
                 </span>
-                {board}
+                {stream}
               </label>
             );
           })}
@@ -101,10 +100,10 @@ const SchoolFilter = () => {
       </div>
 
       <div className="space-y-2 pt-5">
-        <p className="text-sm text-slate-500">Gender</p>
+        <p className="text-sm text-slate-500">College Type</p>
         <div className="grid grid-cols-1 gap-2">
-          {filterOptions.genders.map((item) => {
-            const isSelected = gender === item;
+          {filterOptions.collegeTypes.map((item) => {
+            const isSelected = collegeType === item;
 
             return (
               <label
@@ -117,9 +116,9 @@ const SchoolFilter = () => {
               >
                 <input
                   type="radio"
-                  name="school-gender"
+                  name="college-type"
                   checked={isSelected}
-                  onChange={() => setGender(item)}
+                  onChange={() => setCollegeType(item)}
                   className="sr-only"
                 />
                 <span
@@ -138,16 +137,15 @@ const SchoolFilter = () => {
         </div>
       </div>
 
-
       <div className="space-y-2 pt-5">
-        <p className="text-sm text-slate-500">Category</p>
+        <p className="text-sm text-slate-500">Program</p>
         <div className="relative">
           <select
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
+            value={program}
+            onChange={(event) => setProgram(event.target.value)}
             className="w-full appearance-none rounded-md border border-slate-200 bg-slate-50 px-4 py-2 pr-12 text-sm font-semibold text-slate-700 outline-none transition-all focus:border-[#125fb9] focus:bg-white focus:shadow-md focus:shadow-[#125fb9]/10"
           >
-            {filterOptions.categories.map((item) => (
+            {filterOptions.programs.map((item) => (
               <option key={item}>{item}</option>
             ))}
           </select>
@@ -202,38 +200,39 @@ const SchoolFilter = () => {
 
       <div className="space-y-2 pt-5">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-slate-500">Fees</p>
+          <p className="text-sm text-slate-500">Annual Fees</p>
           <span className="rounded-full bg-[#a0083d]/10 px-3 py-1 text-xs font-semibold text-[#a0083d]">
             {formatFees(fees)}
           </span>
         </div>
         <input
           type="range"
-          min="500"
-          max="500000"
-          step="500"
+          min="5000"
+          max="1000000"
+          step="5000"
           value={fees}
           onChange={(event) => setFees(event.target.value)}
           className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-200 outline-none [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-4 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-[#a0083d] [&::-moz-range-thumb]:shadow-md [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[#a0083d] [&::-webkit-slider-thumb]:shadow-md"
           style={{
-            background: `linear-gradient(to right, #a0083d 0%, #a0083d ${((fees - 500) / (500000 - 500)) * 100}%, #e2e8f0 ${((fees - 500) / (500000 - 500)) * 100}%, #e2e8f0 100%)`,
+            background: `linear-gradient(to right, #a0083d 0%, #a0083d ${((fees - 5000) / (1000000 - 5000)) * 100}%, #e2e8f0 ${((fees - 5000) / (1000000 - 5000)) * 100}%, #e2e8f0 100%)`,
           }}
         />
         <div className="flex justify-between text-[11px] font-medium text-slate-400">
-          <span>{formatFees(500)}</span>
-          <span>{formatFees(500000)}</span>
+          <span>{formatFees(5000)}</span>
+          <span>{formatFees(1000000)}</span>
         </div>
       </div>
 
-      
-
-      <div className='pt-5'>
-        <button className="w-full bg-[#125fb9] text-white py-2 rounded-xl text-sm">
-        Apply
-      </button>
+      <div className="pt-5">
+        <button
+          type="button"
+          className="w-full bg-[#125fb9] text-white py-2 rounded-xl text-sm"
+        >
+          Apply
+        </button>
       </div>
     </div>
   );
 };
 
-export default SchoolFilter;
+export default CollegeFilter;

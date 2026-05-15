@@ -19,7 +19,7 @@ const ContactSection = () => {
             
             {/* Floating Info Card */}
             <div className="absolute bottom-8 left-8 right-8 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
-              <p className="text-white/80 text-md font-black font-[300] tracking-widest mb-1">Direct Line</p>
+              <p className="text-white/80 text-md  font-[500] text-black tracking-widest mb-1">Customer Care</p>
               <div className="flex items-center justify-between">
                 <span className="text-white font-[500] text-[25px]">+91 98765 43210</span>
                 <div className="p-2 bg-black rounded-lg text-white">
@@ -32,14 +32,14 @@ const ContactSection = () => {
           {/* RIGHT COLUMN: Compact Form */}
           <div className="lg:w-7/12 p-8 lg:p-12 ">
             <header className="mb-8">
-              <h3 className="text-3xl font-[500] text-slate-900 tracking-tight mb-2">Book a Session</h3>
+              <h3 className="text-3xl font-[500] text-slate-900 tracking-tight mb-2">For Enquirey</h3>
               <p className="text-slate-500 text-sm font-medium">Fill in your details and we'll handle the rest.</p>
             </header>
             
             <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Parent Name */}
               <div className="md:col-span-2">
-                <label className="block text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-2">Parent Name</label>
+                <label className="block text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-2"> Name</label>
                 <input 
                   type="text" 
                   placeholder="John Doe"
@@ -49,9 +49,10 @@ const ContactSection = () => {
 
               {/* Date & Time */}
               <div>
-                <label className="block text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-2">Date</label>
+                <label className="block text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-2">City</label>
                 <input 
-                  type="date"
+                  type="text"
+                  placeholder='Chennai'
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-5 focus:outline-none focus:border-indigo-500 focus:bg-white transition-all text-sm text-slate-600"
                 />
               </div>
@@ -79,7 +80,7 @@ const ContactSection = () => {
               {/* Submit */}
               <div className="md:col-span-2 pt-2">
                 <button className="w-full bg-[#125fb9] hover:bg-[#125fb9] text-white py-4 rounded-xl font-[500] text-medium shadow-xl shadow-indigo-100 transition-all active:scale-[0.97] flex items-center justify-center gap-3 group">
-                  Confirm Booking
+                  Request Call Back
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>

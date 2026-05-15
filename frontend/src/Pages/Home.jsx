@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import PageSEO from '../components/PageSEO'
+import { seoPages } from '../config/seo'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGraduationCap, faStar, faRocket, faSchool, faPhone } from '@fortawesome/free-solid-svg-icons'
 import BannerSlider from '../components/Banner'
@@ -10,8 +12,14 @@ import HomeOnlineSchool from '../components/HomeOnlineSchool'
 import HomeOnlineCourse from '../components/HomeOnlineCourse'
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div>
+    <>
+      <PageSEO {...seoPages.home} includeSiteSchemas />
+      <div>
 
       <BannerSlider />
       <Marquee />
@@ -52,8 +60,8 @@ const Home = () => {
 
       <ContactSection />
 
-
     </div>
+    </>
   )
 }
 

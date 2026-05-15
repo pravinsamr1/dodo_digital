@@ -1,0 +1,38 @@
+@keyframes modalDropIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-120px);
+    }
+  
+    70% {
+      opacity: 1;
+      transform: translateY(10px);
+    }
+  
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes modalDropOut {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  
+    100% {
+      opacity: 0;
+      transform: translateY(-120px);
+    }
+  }
+  
+  .animate-modalSlide {
+    animation: modalDropIn 0.5s ease-out forwards;
+    will-change: transform, opacity;
+  }
+  
+  .animate-modalClose {
+    animation: modalDropOut 0.35s ease-in forwards;
+    will-change: transform, opacity;
+  }

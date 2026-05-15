@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faInstagram, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/logo.png';
 import { useUserLocation } from '../context/LocationContext';
@@ -8,6 +8,7 @@ import { useUserLocation } from '../context/LocationContext';
 const Footer = () => {
   const { userLocation } = useUserLocation();
   const socialLinks = [
+    { icon: faFacebook, href: '#', label: 'Facebook' },
     { icon: faInstagram, href: '#', label: 'Instagram' },
     { icon: faLinkedin, href: '#', label: 'LinkedIn' },
     { icon: faYoutube, href: '#', label: 'YouTube' },
@@ -22,9 +23,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_2fr] gap-12 mb-10">
 
           {/* LEFT */}
-          <div className="space-y-6">
+          <div className="space-y-">
             <img src={logo} alt="Logo" width={100} height={100} className="brightness-0 invert" />
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-400 pb-5">
               Empowering parents to find the perfect educational pathway through expert counseling.
             </p>
 

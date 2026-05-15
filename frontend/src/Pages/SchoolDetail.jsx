@@ -16,6 +16,8 @@ import {
   Users,
 } from 'lucide-react';
 import { schools } from '../data/schools';
+import PageSEO from '../components/PageSEO';
+import { buildSchoolDetailSeo, buildBreadcrumbSchema } from '../config/seo';
 
 const detailTabs = [
   { icon: Building2, label: 'School Details' },
@@ -109,13 +111,42 @@ const SchoolDetail = () => {
     return content[activeTab];
   }, [activeTab, school]);
 
+  const schoolSeo = useMemo(() => buildSchoolDetailSeo(school), [school]);
+
+  const schoolJsonLd = useMemo(() => {
+    if (!school) return null;
+
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        buildBreadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Schools', path: '/allschools' },
+          { name: school.name, path: `/schools/${school._id}` },
+        ]),
+        {
+          '@type': 'School',
+          name: school.name,
+          description: school.about,
+          address: school.location,
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: school.rating,
+            reviewCount: school.votes,
+          },
+        },
+      ],
+    };
+  }, [school]);
+
   useEffect(() => {
-    document.title = school ? `${school.name} - SchoolFinder` : 'School Not Found';
     window.scrollTo(0, 0);
   }, [school]);
 
   if (!school) {
     return (
+      <>
+        <PageSEO {...schoolSeo} jsonLd={schoolJsonLd} />
       <main className="min-h-screen bg-slate-50 px-6 py-16">
         <div className="mx-auto max-w-4xl rounded-2xl bg-white p-10 text-center shadow-sm">
           <h1 className="text-2xl font-bold text-slate-900">School not found</h1>
@@ -130,10 +161,13 @@ const SchoolDetail = () => {
           </Link>
         </div>
       </main>
+      </>
     );
   }
 
   return (
+    <>
+      <PageSEO {...schoolSeo} jsonLd={schoolJsonLd} />
     <main className="min-h-screen bg-slate-50 pb-12">
       
 
@@ -317,6 +351,7 @@ const SchoolDetail = () => {
         </aside>
       </section>
     </main>
+    </>
   );
 };
 
