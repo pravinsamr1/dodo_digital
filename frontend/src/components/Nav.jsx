@@ -324,7 +324,7 @@ return (
                 className="h-full bg-[#125fb9] hover:bg-[#0d4a91] text-white px-4 md:px-6 py-4.5 rounded-full text-sm md:text-[15px] font-[400] transition-all flex items-center gap-2 justify-center shadow-md hover:shadow-lg active:scale-95"
               >
                 {/* <Search size={16} strokeWidth={2.5} /> */}
-                <span className="hidden sm:block">Search</span>
+                <span>Search</span>
                 {/* <ArrowRight size={15} strokeWidth={2.5} className="hidden md:block" /> */}
               </button>
             </div>
