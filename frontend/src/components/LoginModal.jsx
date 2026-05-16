@@ -112,36 +112,21 @@ const LoginModal = () => {
       />
 
       <div className="relative z-10 flex w-full max-w-6xl flex-col animate-modalSlide overflow-hidden rounded-2xl bg-white shadow-2xl md:min-h-[650px] md:rounded-3xl lg:flex-row">
-        <div className="flex w-full flex-col border-b border-slate-100 bg-slate-50 lg:w-1/2 lg:border-b-0 lg:border-r">
+        <div className="flex w-full flex-col bg-slate-50 lg:w-1/2 lg:border-r lg:border-slate-100">
           <div className="relative h-[220px] shrink-0 overflow-hidden sm:h-[280px] md:h-[340px] lg:h-[480px]">
             <img
               src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800"
               alt="Family exploring schools"
               className="h-full w-full object-cover"
             />
-            <div className="absolute inset-x-0 bottom-0 bg-white/95 px-5 py-3">
-              <p className="text-sm font-semibold text-slate-800">
-                <span className="text-2xl font-black text-[#125fb9]">3</span> Reasons to register
-              </p>
-            </div>
           </div>
-          <ul className="flex flex-col justify-center gap-4 px-5 py-5 sm:px-8 md:px-10 md:py-8">
-            {REASONS.map((reason, index) => (
-              <li key={reason} className="flex items-start gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#125fb9] text-xs font-bold text-white">
-                  {index + 1}
-                </span>
-                <span className="text-sm font-medium text-slate-700">{reason}</span>
-              </li>
-            ))}
-          </ul>
         </div>
 
         <div className="relative flex w-full flex-col justify-center bg-[#f8f9fb] px-5 py-8 sm:px-8 md:px-12 lg:w-1/2 lg:px-14">
           <button
             type="button"
             onClick={handleClose}
-            className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-[#125fb9] text-white shadow-md transition hover:bg-[#0d4a91]"
+            className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-[#125fb9] text-white shadow-lg transition hover:bg-[#0d4a91]"
             aria-label="Close"
           >
             <X size={18} />
