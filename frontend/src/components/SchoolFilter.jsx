@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Check, ChevronDown, MapPin, Filter, X } from 'lucide-react';
 import { useUserLocation } from '../context/LocationContext';
 
-const SchoolFilter = () => {
+const SchoolFilter = ({ onFilterChange }) => {
   const [category, setCategory] = useState('Day School');
   const [selectedBoard, setSelectedBoard] = useState('CBSE');
   const [gender, setGender] = useState('Co-education');
@@ -45,6 +45,13 @@ const SchoolFilter = () => {
       currency: 'INR',
     }).format(amount);
 
+  const handleApply = () => {
+    if (onFilterChange) {
+      onFilterChange({ category, board: selectedBoard, gender, location, distance, fees });
+    }
+    setIsMobileOpen(false);
+  };
+
   const clearFilters = () => {
     setCategory('Day School');
     setSelectedBoard('CBSE');
@@ -53,6 +60,9 @@ const SchoolFilter = () => {
     setIsLocationEdited(false);
     setDistance(15);
     setFees(250000);
+    if (onFilterChange) {
+      onFilterChange({ category: 'Day School', board: 'CBSE', gender: 'Co-education', location: userLocation, distance: 15, fees: 250000 });
+    }
   };
 
   const filterFields = (
@@ -221,7 +231,7 @@ const SchoolFilter = () => {
 
       <div className="pt-5 pb-2">
         <button
-          onClick={() => setIsMobileOpen(false)}
+          onClick={handleApply}
           className="w-full bg-[#125fb9] text-white py-3 rounded-xl text-sm font-bold shadow-md shadow-[#125fb9]/20 transition-all hover:bg-[#0d4a91]"
         >
           Apply Filters
