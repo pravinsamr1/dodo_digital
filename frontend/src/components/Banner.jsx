@@ -66,7 +66,7 @@ const BannerSlider = () => {
                     <span className="text-sm font-medium">Top Rated Schools</span>
                   </div>
 
-                  <h2 className="text-4xl lg:text-3xl font-bold leading-tight mb-5 max-w-2xl">
+                  <h2 className="text-2xl lg:text-3xl font-bold leading-tight mb-5 max-w-2xl">
                     Find The Best Schools In Chennai
                   </h2>
 
