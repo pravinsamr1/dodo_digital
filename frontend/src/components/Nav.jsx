@@ -7,6 +7,8 @@ import { useAuthModal } from '../context/AuthModalContext';
 
 const Nav = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [placeholderText, setPlaceholderText] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCountryOpen, setIsCountryOpen] = useState(false);
@@ -77,6 +79,29 @@ const Nav = () => {
     typeEffect();
   }, []);
 
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchSuggestions([]);
+      return;
+    }
+
+    const query = searchQuery.toLowerCase();
+
+    const filtered = searchableItems.filter((item) => {
+      return (
+        item.name.toLowerCase().includes(query) ||
+        item.type.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query) ||
+        item.location.toLowerCase().includes(query) ||
+        item.keywords.some((keyword) =>
+          keyword.toLowerCase().includes(query)
+        )
+      );
+    });
+
+    setSearchSuggestions(filtered.slice(0, 6));
+  }, [searchQuery]);
+
   const menuItems = [
     { name: 'Online Schools', badge: 'NIOS', url: '/online-schools' },
     { name: 'Schools', url: '/allschools' },
@@ -87,6 +112,83 @@ const Nav = () => {
 
   const countries = [
     { name: 'India', flag: '🇮🇳' },
+  ];
+
+  // Temporary searchable data
+  // Replace later with backend API response
+  const searchableItems = [
+    {
+      type: 'School',
+      name: 'DAV Public School',
+      category: 'CBSE School',
+      location: 'Chennai',
+      keywords: ['cbse', 'school', 'education', 'day school'],
+      path: '/allschools',
+    },
+    {
+      type: 'School',
+      name: 'Velammal Vidyalaya',
+      category: 'International School',
+      location: 'Chennai',
+      keywords: ['international', 'school', 'boarding'],
+      path: '/allschools',
+    },
+    {
+      type: 'College',
+      name: 'Loyola College',
+      category: 'Arts & Science College',
+      location: 'Chennai',
+      keywords: ['college', 'arts', 'science', 'degree'],
+      path: '/junior-colleges',
+    },
+    {
+      type: 'College',
+      name: 'SRM University',
+      category: 'Engineering College',
+      location: 'Chennai',
+      keywords: ['engineering', 'college', 'btech'],
+      path: '/junior-colleges',
+    },
+    {
+      type: 'Course',
+      name: 'Full Stack Development',
+      category: 'Programming Course',
+      location: 'Online',
+      keywords: ['mern', 'react', 'nodejs', 'coding'],
+      path: '/online-courses',
+    },
+    {
+      type: 'Course',
+      name: 'Digital Marketing',
+      category: 'Marketing Course',
+      location: 'Online',
+      keywords: ['seo', 'ads', 'marketing'],
+      path: '/online-courses',
+    },
+    {
+      type: 'Category',
+      name: 'CBSE Schools',
+      category: 'School Category',
+      location: 'India',
+      keywords: ['cbse', 'schools'],
+      path: '/allschools',
+    },
+    {
+      type: 'Category',
+      name: 'Boarding Schools',
+      category: 'School Category',
+      location: 'India',
+      keywords: ['boarding', 'hostel', 'residential'],
+      path: '/allschools',
+    },
+    {
+      type: 'Category',
+      name: 'Academic Classes',
+      category: 'Extracurricular',
+      location: 'India',
+      keywords: ['dance', 'music', 'sports', 'robotics'],
+      path: '/academic-classes',
+    },
   ];
 
 return (
@@ -183,7 +285,7 @@ return (
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
           
           {/* Integrated Search Bar with Location Context */}
-          <div className="relative flex-1 group w-full">
+          <div className="relative flex-1 group w-full z-40">
             <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none gap-3">
               <Search size={18} className="text-slate-400 group-focus-within:text-indigo-600 transition-colors" />
             </div>
@@ -191,6 +293,12 @@ return (
             <input
               type="text"
               value={searchQuery}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => {
+                setTimeout(() => {
+                  setIsSearchFocused(false);
+                }, 150);
+              }}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={placeholderText}
               className="w-full bg-white border border-[#dbdbdb] rounded-4xl py-3 pl-12 pr-28 md:pr-40 outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/5 transition-all text-slate-700  text-sm font-medium"
@@ -198,10 +306,48 @@ return (
 
             {/* Quick Filter inside Search */}
             <div className="absolute right-2 top-2 bottom-2 flex items-center">
-              <button className="h-full bg-[#125fb9] hover:bg-[#0d4a91] text-white px-4 md:px-8 rounded-4xl text-[11px] font-medium tracking-[0.1em] transition-all flex items-center justify-center active:scale-95">
+              <button
+                type="button"
+                onClick={() => {
+                  if (searchQuery.trim()) {
+                    navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+                  }
+                }}
+                className="h-full bg-[#125fb9] hover:bg-[#0d4a91] text-white px-4 md:px-8 rounded-4xl text-[11px] font-medium tracking-[0.1em] transition-all flex items-center justify-center active:scale-95"
+              >
                 Search
               </button>
             </div>
+
+            {isSearchFocused && searchSuggestions.length > 0 && (
+              <div className="absolute left-0 right-0 top-[110%] overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl">
+                {searchSuggestions.map((item, index) => (
+                  <button
+                    key={`${item.name}-${index}`}
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery(item.name);
+                      setIsSearchFocused(false);
+                      navigate(item.path);
+                    }}
+                    className="flex w-full items-center justify-between border-b border-slate-100 px-5 py-4 text-left transition-all hover:bg-slate-50"
+                  >
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">
+                        {item.name}
+                      </p>
+                      <p className="mt-1 text-xs font-medium text-[#125fb9]">
+                        {item.type} • {item.category} • {item.location}
+                      </p>
+                    </div>
+
+                    <span className="text-xs font-medium text-slate-400">
+                      View
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Authentication Actions */}

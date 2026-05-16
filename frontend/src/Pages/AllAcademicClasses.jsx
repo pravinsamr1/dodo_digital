@@ -59,9 +59,6 @@ const AllAcademicClasses = () => {
           <div className="absolute inset-0 bg-slate-950/70" />
           <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
             <h1 className="text-3xl font-[500] text-white md:text-5xl">Academic Classes</h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-200 md:text-base">
-              Extracurricular activities for students — teachers allocated after fee payment to admin
-            </p>
           </div>
         </div>
 

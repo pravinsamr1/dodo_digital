@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Share2 } from 'lucide-react';
 import CollegeFilter from '../components/CollegeFilter';
 import { colleges } from '../data/colleges';
 import { useAuthModal } from '../context/AuthModalContext';
+import { useUserLocation } from '../context/LocationContext';
 import PageSEO from '../components/PageSEO';
 import { seoPages } from '../config/seo';
 
 const AllColleges = () => {
   const { openLoginModal } = useAuthModal();
+  const { userLocation } = useUserLocation();
   const [currentPage, setCurrentPage] = useState(1);
 
   const collegesPerPage = 10;
@@ -16,6 +18,33 @@ const AllColleges = () => {
   const currentColleges = colleges.slice(0, indexOfLastCollege);
 
   const totalPages = Math.ceil(colleges.length / collegesPerPage);
+
+  const getDynamicDistance = useMemo(() => {
+    return (college) => {
+      if (!userLocation) {
+        return 'Nearby';
+      }
+
+      const normalizedUserLocation = userLocation.toLowerCase();
+      const normalizedCollegeLocation = `${college.location} ${college.city}`.toLowerCase();
+
+      if (
+        normalizedCollegeLocation.includes('ambattur') &&
+        normalizedUserLocation.includes('ambattur')
+      ) {
+        return '2.1 km';
+      }
+
+      if (
+        normalizedCollegeLocation.includes('chennai') &&
+        normalizedUserLocation.includes('chennai')
+      ) {
+        return `${(Math.random() * 8 + 3).toFixed(1)} km`;
+      }
+
+      return `${(Math.random() * 25 + 10).toFixed(1)} km`;
+    };
+  }, [userLocation]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -63,7 +92,7 @@ const AllColleges = () => {
 
                       <div className="absolute top-3 left-3 flex gap-2">
                         <span className="bg-slate-800 text-white text-xs px-2 py-1 rounded-md">
-                          12.4 km
+                          {getDynamicDistance(college)}
                         </span>
                         <span className="bg-slate-600 text-white text-xs px-2 py-1 rounded-md">
                           Admission Open
