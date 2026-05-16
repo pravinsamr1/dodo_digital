@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Check, ChevronDown, MapPin } from 'lucide-react';
+import { Check, ChevronDown, MapPin, Filter, X } from 'lucide-react';
 import { useUserLocation } from '../context/LocationContext';
 
 const SchoolFilter = () => {
@@ -10,6 +10,7 @@ const SchoolFilter = () => {
   const [isLocationEdited, setIsLocationEdited] = useState(false);
   const [distance, setDistance] = useState(15);
   const [fees, setFees] = useState(250000);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { isLocationLoading, userLocation } = useUserLocation();
 
   // Dynamic filter data (replace with API/context data later)
@@ -19,15 +20,23 @@ const SchoolFilter = () => {
     categories: ['Day School', 'Boarding', 'International', 'Government Schools'],
   };
 
-  // Future backend integration example:
-  // const { filterOptions } = useSchoolFilterContext();
-  // or fetch from API and update dynamically
-
   useEffect(() => {
     if (!isLocationLoading && !isLocationEdited) {
       setLocation(userLocation);
     }
   }, [isLocationEdited, isLocationLoading, userLocation]);
+
+  // Handle body scroll locking when mobile modal is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileOpen]);
 
   const formatFees = (amount) =>
     new Intl.NumberFormat('en-IN', {
@@ -46,23 +55,9 @@ const SchoolFilter = () => {
     setFees(250000);
   };
 
-  return (
-    <div className="thin-scrollbar w-full rounded-2xl border border-slate-100 bg-white p-5 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:w-72 lg:overflow-y-auto">
-      <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-slate-700">Filters</h2>
-        <button
-          type="button"
-          onClick={clearFilters}
-          className="rounded-full bg-[#125fb9]/10 px-3 py-1 text-xs font-semibold text-[#125fb9] transition-all hover:bg-[#125fb9] hover:text-white"
-        >
-          Clear all
-        </button>
-      </div>
-
-
-      
-
-      <div className="space-y-2 pt-5">
+  const filterFields = (
+    <>
+      <div className="space-y-2 pt-2 lg:pt-5">
         <p className="text-sm text-slate-500">Board</p>
         <div className="grid grid-cols-1 gap-2">
           {filterOptions.boards.map((board) => {
@@ -137,7 +132,6 @@ const SchoolFilter = () => {
           })}
         </div>
       </div>
-
 
       <div className="space-y-2 pt-5">
         <p className="text-sm text-slate-500">Category</p>
@@ -225,14 +219,70 @@ const SchoolFilter = () => {
         </div>
       </div>
 
-      
-
-      <div className='pt-5'>
-        <button className="w-full bg-[#125fb9] text-white py-2 rounded-xl text-sm">
-        Apply
-      </button>
+      <div className="pt-5 pb-2">
+        <button
+          onClick={() => setIsMobileOpen(false)}
+          className="w-full bg-[#125fb9] text-white py-3 rounded-xl text-sm font-bold shadow-md shadow-[#125fb9]/20 transition-all hover:bg-[#0d4a91]"
+        >
+          Apply Filters
+        </button>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile Floating Action Button (FAB) */}
+      <button
+        onClick={() => setIsMobileOpen(true)}
+        className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#125fb9] text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-transform hover:scale-105 lg:hidden"
+        aria-label="Open Filters"
+      >
+        <Filter size={24} />
+      </button>
+
+      {/* Mobile Modal Overlay */}
+      {isMobileOpen && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm lg:hidden">
+          <div className="w-full max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-6 shadow-xl animate-in slide-in-from-bottom duration-300">
+            <div className="sticky top-0 z-10 -mx-6 -mt-6 mb-4 flex items-center justify-between bg-white/80 px-6 py-4 backdrop-blur-md">
+              <h2 className="text-xl font-bold text-slate-900">Filters</h2>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="rounded-full bg-[#125fb9]/10 px-3 py-1.5 text-xs font-semibold text-[#125fb9] transition-all hover:bg-[#125fb9] hover:text-white"
+                >
+                  Clear all
+                </button>
+                <button
+                  onClick={() => setIsMobileOpen(false)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+            {filterFields}
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Sidebar (hidden on mobile) */}
+      <div className="hidden thin-scrollbar w-full rounded-2xl border border-slate-100 bg-white p-5 shadow-sm lg:sticky lg:top-24 lg:block lg:max-h-[calc(100vh-7rem)] lg:w-72 lg:overflow-y-auto">
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold text-slate-700">Filters</h2>
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="rounded-full bg-[#125fb9]/10 px-3 py-1 text-xs font-semibold text-[#125fb9] transition-all hover:bg-[#125fb9] hover:text-white"
+          >
+            Clear all
+          </button>
+        </div>
+        {filterFields}
+      </div>
+    </>
   );
 };
 
