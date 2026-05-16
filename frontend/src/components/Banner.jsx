@@ -31,8 +31,9 @@ const BannerSlider = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-auto lg:h-[550px] overflow-hidden px-4 py-4 bg-slate-50">
-      {/* Left Main Slider */}
+    <section className="bg-slate-50">
+      <div className="max-w-[1420px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-4 h-auto lg:h-[550px] overflow-hidden px-4 sm:px-6 lg:px-10 py-4">
+        {/* Left Main Slider */}
       <div className="relative rounded-3xl overflow-hidden h-[350px] lg:h-full shadow-xl lg:col-span-8">
         <Swiper
           spaceBetween={0}
@@ -106,7 +107,8 @@ const BannerSlider = () => {
           />
         </div>
       </div>
-    </div>
+      </div>
+    </section>
   );
 };
 

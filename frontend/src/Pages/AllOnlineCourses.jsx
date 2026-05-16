@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import ShareButton from '../components/ShareButton';
 import OnlineCourseFilter from '../components/OnlineCourseFilter';
 import { onlineCourses } from '../data/onlineCourses';
@@ -145,13 +146,14 @@ const AllOnlineCourses = () => {
                         >
                           Get a Call
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => openLoginModal(course._id)}
-                          className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm cursor-pointer"
-                        >
-                          Enroll Now
-                        </button>
+                          <Link to={`/online-courses/${course._id}`} className="flex-1">
+                            <button
+                              type="button"
+                              className="w-full bg-[#125fb9] text-white py-2 rounded-lg text-sm cursor-pointer"
+                            >
+                              View Details
+                            </button>
+                          </Link>
                       </div>
                     </div>
                   </div>

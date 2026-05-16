@@ -14,8 +14,8 @@ const Nav = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCountryOpen, setIsCountryOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState({
-    name: 'India',
-    flag: '🇮🇳',
+    name: 'IND',
+    flag: 'https://flagcdn.com/w40/in.png',
   });
   const countryDropdownRef = useRef(null);
   const { userLocation, isLocationLoading, refreshLocation } = useUserLocation();
@@ -116,7 +116,7 @@ const Nav = () => {
   ];
 
   const countries = [
-    { name: 'Ind', flag: '🇮🇳' },
+    { name: 'IND', flag: 'https://flagcdn.com/w40/in.png' },
   ];
 
   // Temporary searchable data
@@ -200,7 +200,7 @@ return (
     <header className="w-full flex flex-col bg-slate-100 font-sans sticky top-0 z-50">
       
       {/* ROW 1: Branding & Porimary Navigation */}
-      <div className="max-w-8xl mx-auto w-full px-6 h-16 flex items-center justify-between border-b border-gray-100">
+      <div className="max-w-[1400px] mx-auto w-full px-6 lg:px-10 h-16 flex items-center justify-between border-b border-gray-100">
         <div className="flex items-center gap-12">
           {/* Brand Logo */}
           <img 
@@ -250,7 +250,7 @@ return (
               onClick={() => setIsCountryOpen((prev) => !prev)}
               className="flex items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-1.5 rounded-full transition-all hover:bg-slate-100 border border-transparent hover:border-slate-200"
             >
-              <span className="text-lg">{selectedCountry.flag}</span>
+              <img src={selectedCountry.flag} alt="flag" className="h-5 w-5 rounded-full object-cover shadow-sm" />
               <span className="text-sm font-medium">{selectedCountry.name}</span>
               <ChevronDown
                 size={14}
@@ -277,7 +277,7 @@ return (
                     index !== 0 ? 'border-t border-slate-100' : ''
                   }`}
                 >
-                  <span className="text-lg">{country.flag}</span>
+                  <img src={country.flag} alt="flag" className="h-5 w-5 rounded-full object-cover shadow-sm" />
                   {country.name}
                 </button>
               ))}
@@ -290,10 +290,10 @@ return (
 
       {/* ROW 2: Command Center (Search & Auth) */}
       <div className="bg-[#fcfcfd] border-t border-slate-200 py-2">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
+        <div className="max-w-[1400px] mx-auto w-full px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
           
           {/* Integrated Search Bar with Location Context */}
-          <div className="relative flex-1 group w-full z-40">
+          <div className="relative flex-1 group w-full max-w-5xl z-40">
             <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none gap-3">
               <Search size={18} className="text-slate-400 group-focus-within:text-indigo-600 transition-colors" />
             </div>
@@ -325,7 +325,7 @@ return (
               >
                 {/* <Search size={16} strokeWidth={2.5} /> */}
                 <span>Search</span>
-                {/* <ArrowRight size={15} strokeWidth={2.5} className="hidden md:block" /> */}
+                <ArrowRight size={15} strokeWidth={2.5} className="hidden md:block" />
               </button>
             </div>
 
@@ -457,7 +457,7 @@ return (
               className="flex items-center gap-3 text-slate-700 px-4 py-4 w-full rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100"
               onClick={() => setIsCountryOpen((prev) => !prev)}
             >
-              <span className="text-2xl">{selectedCountry.flag}</span>
+              <img src={selectedCountry.flag} alt="flag" className="h-6 w-6 rounded-full object-cover shadow-sm" />
               <span className="text-[16px] font-bold flex-1 text-left">{selectedCountry.name}</span>
               <ChevronDown size={20} className={`transition-transform duration-300 text-slate-400 ${isCountryOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -472,7 +472,7 @@ return (
                     }}
                     className="w-full flex items-center gap-3 text-left py-3 px-4 rounded-xl text-[15px] font-semibold text-slate-600 hover:bg-slate-50"
                   >
-                    <span className="text-xl">{country.flag}</span>
+                    <img src={country.flag} alt="flag" className="h-5 w-5 rounded-full object-cover shadow-sm" />
                     {country.name}
                   </button>
                 ))}

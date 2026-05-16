@@ -5,7 +5,6 @@ import {
   Building2,
   CalendarDays,
   GraduationCap,
-  Heart,
   IndianRupee,
   Info,
   MapPin,
@@ -24,9 +23,9 @@ import { buildSchoolDetailSeo, buildBreadcrumbSchema } from '../config/seo';
 const detailTabs = [
   { icon: GraduationCap, label: 'Admission' },
   { icon: Building2, label: 'School Details' },
-  { icon: BookOpen, label: 'Academics' },
-  { icon: IndianRupee, label: 'Fees' },
-  { icon: Users, label: 'Activities' },
+  { icon: BookOpen, label: 'Facilities' },
+  { icon: IndianRupee, label: 'Fees Structure' },
+  { icon: Users, label: 'Extra Activities' },
   { icon: ImageIcon, label: 'Gallery' },
 ];
 
@@ -55,37 +54,43 @@ const SchoolDetail = () => {
           ['Board', school.board],
         ],
       },
-      Academics: {
+      Facilities: {
         icon: BookOpen,
-        title: 'Academics',
-        subtitle: 'Learning Approach',
+        title: 'Facilities',
+        subtitle: 'Campus & Infrastructure',
         items: [
-          ['Curriculum', school.board],
-          ['Academic level', school.grade],
-          ['Assessment style', 'Term exams, projects, activities'],
-          ['Learning support', 'Mentoring and remedial sessions'],
+          ['Smart Classrooms', 'Available with interactive boards'],
+          ['Laboratories', 'Physics, Chemistry, Biology, and Computer Labs'],
+          ['Library', 'Well-stocked with 10,000+ books'],
+          ['Sports Complex', 'Indoor stadium, swimming pool, football ground'],
+          ['Transport', 'GPS-enabled AC buses covering 30km radius'],
+          ['Medical Room', 'Full-time nurse and doctor on call'],
         ],
       },
-      Fees: {
+      'Fees Structure': {
         icon: IndianRupee,
-        title: 'Fees',
-        subtitle: 'Estimated Fee Details',
+        title: 'Fees Structure',
+        subtitle: 'Grade-wise Annual Fees',
         items: [
-          ['Day school fee', `₹ ${school.dayFee} / year`],
-          ['Boarding fee', `₹ ${school.boardingFee} / year`],
-          ['Application fee', '₹ 1,000'],
-          ['Payment mode', 'Term-wise and annual'],
+          ['Pre-KG & LKG', '₹ 45,000 / year'],
+          ['UKG', '₹ 48,000 / year'],
+          ['Grade 1 to Grade 3', '₹ 55,000 / year'],
+          ['Grade 4 to Grade 5', '₹ 60,000 / year'],
+          ['Grade 6 to Grade 8', '₹ 75,000 / year'],
+          ['Grade 9 to Grade 10', '₹ 90,000 / year'],
+          ['Grade 11 to Grade 12', '₹ 1,10,000 / year'],
         ],
       },
-      Activities: {
+      'Extra Activities': {
         icon: Users,
-        title: 'Activities',
-        subtitle: 'Campus Life',
+        title: 'Extra Activities',
+        subtitle: 'Co-curricular & Extracurricular',
         items: [
-          ['Sports', 'Football, basketball, athletics'],
-          ['Clubs', 'Science, arts, debate, robotics'],
-          ['Events', 'Annual day, exhibitions, competitions'],
-          ['Student care', 'Counselling and wellness support'],
+          ['Performing Arts', 'Classical Dance, Western Music, Drama'],
+          ['Clubs & Societies', 'Robotics, Coding, Eco Club, Literary Society'],
+          ['Sports Training', 'Cricket, Football, Basketball, Tennis, Swimming'],
+          ['Outdoor Trips', 'Annual educational tours and camping'],
+          ['Competitions', 'Inter-school debates, Olympiads, Hackathons'],
         ],
       },
       Admission: {
@@ -192,7 +197,7 @@ const SchoolDetail = () => {
       <PageSEO {...schoolSeo} jsonLd={schoolJsonLd} />
     <main className="min-h-screen bg-slate-50 pb-12">
       
-      <section className="mx-auto mt-4 sm:mt-6 max-w-[1400px] px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-[1400px] px-4 sm:px-6 pt-3 lg:px-8">
         <div className="overflow-hidden rounded-3xl bg-white p-2 sm:p-3 shadow-sm">
           <div className="grid gap-2 sm:gap-3 lg:grid-cols-[1.55fr_1fr]">
             <div className="relative">
@@ -272,9 +277,6 @@ const SchoolDetail = () => {
 
             <div className="flex flex-col sm:flex-row xl:flex-col gap-4 items-center sm:items-stretch xl:items-end">
               <div className="flex gap-3 w-full sm:w-auto justify-center xl:justify-end">
-                <button className="flex flex-1 sm:flex-none h-11 w-11 sm:w-11 items-center justify-center rounded-xl border border-[#125fb9]/30 text-[#125fb9] transition-all hover:bg-[#125fb9] hover:text-white">
-                  <Heart size={19} />
-                </button>
                 <ShareButton title={school.name} className="flex flex-1 sm:flex-none h-11 w-11 sm:w-11 items-center justify-center rounded-xl border border-[#125fb9]/30 text-[#125fb9] transition-all hover:bg-[#125fb9] hover:text-white" iconSize={19} />
               </div>
               <div className="grid w-full grid-cols-2 gap-3 text-xs sm:text-sm font-bold text-emerald-600 xl:grid-cols-1">
@@ -358,6 +360,15 @@ const SchoolDetail = () => {
           </h2>
           <form className="mt-5 sm:mt-6 space-y-4">
             <label className="block text-xs sm:text-sm font-semibold text-slate-700">
+              School Name
+              <input
+                type="text"
+                value={school.name}
+                readOnly
+                className="mt-1.5 sm:mt-2 w-full rounded-xl border border-slate-200 bg-slate-100 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-slate-600 outline-none cursor-not-allowed"
+              />
+            </label>
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700">
               Parent Name
               <input
                 type="text"
@@ -374,11 +385,12 @@ const SchoolDetail = () => {
               />
             </label>
             <label className="block text-xs sm:text-sm font-semibold text-slate-700">
-              Date & Time Slot
-              <div className="mt-1.5 sm:mt-2 flex items-center gap-2 sm:gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-500">
-                <CalendarDays size={16} className="sm:h-4 sm:w-4" />
-                Select preferred slot
-              </div>
+              City
+              <input
+                type="text"
+                placeholder="Enter your city"
+                className="mt-1.5 sm:mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm outline-none focus:border-[#125fb9] focus:bg-white"
+              />
             </label>
             <button
               type="button"

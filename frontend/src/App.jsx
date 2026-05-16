@@ -14,7 +14,9 @@ import AllOnlineCourses from './Pages/AllOnlineCourses'
 import AllAcademicClasses from './Pages/AllAcademicClasses'
 import SearchResults from './Pages/SearchResults'
 import AbroadEducation from './Pages/AbroadEducation'
+import CollegeDetail from './Pages/CollegeDetail'
 import Institutes from './Pages/Institutes'
+import OnlineCourseDetail from './Pages/OnlineCourseDetail'
 
 const App = () => {
   return (
@@ -31,9 +33,11 @@ const App = () => {
             <Route path="/online-courses" element={<AllOnlineCourses/>} />
             <Route path="/academic-classes" element={<AllAcademicClasses/>} />
             <Route path="/schools/:id" element={<SchoolDetail/>} />
+            <Route path="/colleges/:id" element={<CollegeDetail/>} />
             <Route path="/search" element={<SearchResults/>} />
             <Route path="/abroad-education" element={<AbroadEducation/>} />
             <Route path="/institutes" element={<Institutes/>} />
+            <Route path="/online-courses/:id" element={<OnlineCourseDetail/>} />
           </Routes>
         </AuthModalProvider>
         <Footer />

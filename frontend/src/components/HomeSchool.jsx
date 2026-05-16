@@ -114,7 +114,7 @@ const SchoolLocationSection = () => {
           <div className="relative w-fit">
             <button 
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 rounded-xl text-sm font-bold hover:bg-indigo-100 transition-all duration-300 border border-indigo-100"
+              className="flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 rounded-xl text-sm font-[500] hover:bg-indigo-100 transition-all duration-300 border border-indigo-100"
             >
               Filter By
               <ChevronDown size={18} className={`transition-transform duration-300 ${isFilterOpen ? 'rotate-180' : ''}`} />

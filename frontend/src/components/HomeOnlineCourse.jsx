@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Star, Clock, Users, ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const HomeOnlineCourse = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -143,9 +144,11 @@ const HomeOnlineCourse = () => {
                   </div>
                 </div>
 
-                <button className="w-full py-3 rounded-2xl bg-[#a0083d] text-white font-[500] hover:bg-[#850632] transition-all duration-300">
-                  Enroll Now
-                </button>
+                <Link to={`/online-courses/${course.id}`}>
+                  <button className="w-full py-3 rounded-2xl bg-[#a0083d] text-white font-[500] hover:bg-[#850632] transition-all duration-300">
+                    View Details
+                  </button>
+                </Link>
               </div>
             </div>
           ))}

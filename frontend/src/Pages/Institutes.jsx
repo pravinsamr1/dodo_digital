@@ -18,6 +18,10 @@ const Institutes = () => {
   const filteredItems = institutes.filter(item => {
     if (filters.category !== 'All' && item.category !== filters.category) return false;
     if (filters.mode !== 'All' && item.learningMode !== filters.mode) return false;
+    if (filters.maxPrice) {
+      const price = parseInt(item.price.replace(/,/g, ''));
+      if (price > filters.maxPrice) return false;
+    }
     return true;
   });
 

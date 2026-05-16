@@ -4,19 +4,24 @@ import { Check } from 'lucide-react';
 const InstitutesFilter = ({ onFilterChange }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [learningMode, setLearningMode] = useState('All');
+  const [maxPrice, setMaxPrice] = useState(100000);
 
   const categories = ['All', 'Software Development', 'Electrical Design', 'SCADA & PLC', 'Cyber Security', 'Mechanical Design', 'Data Science'];
   const learningModes = ['All', 'Online', 'Offline', 'Hybrid'];
 
-  useEffect(() => {
+  const handleApply = () => {
     if (onFilterChange) {
-      onFilterChange({ category: selectedCategory, mode: learningMode });
+      onFilterChange({ category: selectedCategory, mode: learningMode, maxPrice });
     }
-  }, [selectedCategory, learningMode, onFilterChange]);
+  };
 
   const clearFilters = () => {
     setSelectedCategory('All');
     setLearningMode('All');
+    setMaxPrice(100000);
+    if (onFilterChange) {
+      onFilterChange({ category: 'All', mode: 'All', maxPrice: 100000 });
+    }
   };
 
   return (
@@ -100,6 +105,43 @@ const InstitutesFilter = ({ onFilterChange }) => {
             );
           })}
         </div>
+      </div>
+
+      <div className="space-y-4 pt-8">
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-slate-500">Max Fees</p>
+          <span className="text-sm font-bold text-[#a0083d]">
+            ₹{maxPrice.toLocaleString()}
+          </span>
+        </div>
+        <div className="px-1">
+          <input
+            type="range"
+            min="10000"
+            max="100000"
+            step="5000"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(Number(e.target.value))}
+            className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-200 outline-none [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-4 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-[#a0083d] [&::-moz-range-thumb]:shadow-md [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[#a0083d] [&::-webkit-slider-thumb]:shadow-md"
+            style={{
+              background: `linear-gradient(to right, #a0083d 0%, #a0083d ${((maxPrice - 10000) / (100000 - 10000)) * 100}%, #e2e8f0 ${((maxPrice - 10000) / (100000 - 10000)) * 100}%, #e2e8f0 100%)`,
+            }}
+          />
+          <div className="flex justify-between pt-2 text-[10px] font-medium text-slate-400">
+            <span>₹10k</span>
+            <span>₹100k</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-6">
+        <button
+          type="button"
+          onClick={handleApply}
+          className="w-full rounded-xl bg-[#125fb9] py-3 text-sm font-bold text-white transition-all hover:bg-[#125fb9]/90 active:scale-[0.98]"
+        >
+          Apply Filter
+        </button>
       </div>
     </div>
   );

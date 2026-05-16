@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ShareButton from '../components/ShareButton';
+import { Link } from 'react-router-dom';
 import CollegeFilter from '../components/CollegeFilter';
 import { colleges } from '../data/colleges';
 import { useAuthModal } from '../context/AuthModalContext';
@@ -151,18 +152,16 @@ const AllColleges = () => {
                       <div className="flex flex-col gap-2 pt-2 sm:flex-row">
                         <button
                           type="button"
-                          onClick={() => openLoginModal(college._id)}
-                          className="flex-1 bg-slate-200 text-slate-700 py-2 rounded-lg text-sm cursor-pointer"
+                          className="flex-1 bg-slate-200 text-slate-700 py-2 rounded-lg text-sm cursor-pointer hover:bg-slate-300 transition-colors"
                         >
                           Get a Call
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => openLoginModal(college._id)}
-                          className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm cursor-pointer"
+                        <Link
+                          to={`/colleges/${college._id}`}
+                          className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm cursor-pointer text-center flex items-center justify-center hover:bg-[#0d4a91] transition-colors"
                         >
                           View College
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>

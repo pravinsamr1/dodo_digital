@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MapPin, Star, ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const CollegeLocationSection = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -110,7 +111,7 @@ const CollegeLocationSection = () => {
           <div className="relative w-fit">
             <button 
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 rounded-xl text-sm font-bold hover:bg-indigo-100 transition-all duration-300 border border-indigo-100"
+              className="flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 rounded-xl text-sm font-[500] hover:bg-indigo-100 transition-all duration-300 border border-indigo-100"
             >
               Filter By
               <ChevronDown size={18} className={`transition-transform duration-300 ${isFilterOpen ? 'rotate-180' : ''}`} />
@@ -189,9 +190,11 @@ const CollegeLocationSection = () => {
                   </div>
                 </div>
 
-                <button className="w-full py-3 bg-[#a0083d] text-white font-[500] text-sm rounded-xl hover:bg-[#8a0734] transition-all duration-300">
-                  View Details
-                </button>
+                <Link to={`/colleges/${college.id}`} className="block mt-4">
+                  <button className="w-full bg-[#a0083d] text-white py-2.5 rounded-xl text-sm font-bold transition-all hover:bg-[#850632] hover:shadow-lg active:scale-95">
+                    View Details
+                  </button>
+                </Link>
               </div>
             </div>
             )
