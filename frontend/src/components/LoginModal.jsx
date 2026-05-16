@@ -114,19 +114,48 @@ const LoginModal = () => {
       <div className="relative z-10 flex w-full max-w-6xl flex-col animate-modalSlide overflow-hidden rounded-2xl bg-white shadow-2xl md:min-h-[650px] md:rounded-3xl lg:flex-row">
         <div className="flex w-full flex-col bg-slate-50 lg:w-1/2 lg:border-r lg:border-slate-100">
           <div className="relative h-[220px] shrink-0 overflow-hidden sm:h-[280px] md:h-[340px] lg:h-[480px]">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="absolute right-4 top-4 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-slate-800 shadow-xl backdrop-blur-md transition hover:bg-white"
-              aria-label="Close"
-            >
-              <X size={22} strokeWidth={2.5} />
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={handleClose}
+                className="absolute right-4 top-4 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-slate-800 shadow-xl backdrop-blur-md transition hover:bg-white lg:hidden"
+                aria-label="Close"
+              >
+                <X size={22} strokeWidth={2.5} />
+              </button>
+
+              <button
+                type="button"
+                onClick={handleClose}
+                className="hidden lg:flex absolute right-5 top-5 z-40 h-11 w-11 items-center justify-center rounded-full bg-white/95 text-slate-800 shadow-xl backdrop-blur-md transition hover:bg-white"
+                aria-label="Close"
+              >
+                <X size={22} strokeWidth={2.5} />
+              </button>
+            </>
             <img
               src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800"
               alt="Family exploring schools"
               className="h-full w-full object-cover"
             />
+            <div className="hidden lg:block absolute inset-x-0 bottom-0 bg-white/95 backdrop-blur-sm px-8 py-6">
+              <p className="mb-5 text-lg font-semibold text-slate-800">
+                <span className="text-3xl font-black text-[#125fb9]">3</span> Reasons to register
+              </p>
+
+              <ul className="space-y-4">
+                {REASONS.map((reason, index) => (
+                  <li key={reason} className="flex items-center gap-4">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#125fb9] text-sm font-bold text-white">
+                      {index + 1}
+                    </span>
+                    <span className="text-[15px] font-medium text-slate-700">
+                      {reason}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
