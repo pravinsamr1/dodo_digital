@@ -12,6 +12,10 @@ import {
   Phone,
   Share2,
   Users,
+  Image as ImageIcon,
+  X,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { schools } from '../data/schools';
 import PageSEO from '../components/PageSEO';
@@ -23,11 +27,14 @@ const detailTabs = [
   { icon: BookOpen, label: 'Academics' },
   { icon: IndianRupee, label: 'Fees' },
   { icon: Users, label: 'Activities' },
+  { icon: ImageIcon, label: 'Gallery' },
 ];
 
 const SchoolDetail = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('School Details');
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+
   const school = useMemo(
     () => schools.find((currentSchool) => currentSchool._id === id),
     [id]
@@ -92,6 +99,12 @@ const SchoolDetail = () => {
           ['Interaction', 'Parent counselling and student assessment'],
         ],
       },
+      Gallery: {
+        icon: ImageIcon,
+        title: 'Gallery',
+        subtitle: 'Campus Images',
+        items: [],
+      },
     };
 
     return content[activeTab];
@@ -129,6 +142,29 @@ const SchoolDetail = () => {
     window.scrollTo(0, 0);
   }, [school]);
 
+  // Handle keyboard navigation for the modal
+  useEffect(() => {
+    if (selectedImageIndex === null || !school) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSelectedImageIndex(null);
+      } else if (e.key === 'ArrowLeft') {
+        setSelectedImageIndex((prev) => (prev === 0 ? school.gallery.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setSelectedImageIndex((prev) => (prev === school.gallery.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedImageIndex, school]);
+
   if (!school) {
     return (
       <>
@@ -163,19 +199,21 @@ const SchoolDetail = () => {
               <img
                 src={school.gallery[0]}
                 alt={`${school.name} campus`}
-                className="h-[250px] sm:h-[400px] lg:h-[500px] w-full rounded-2xl object-cover"
+                className="h-[250px] sm:h-[400px] lg:h-[500px] w-full rounded-2xl object-cover cursor-pointer"
+                onClick={() => setSelectedImageIndex(0)}
               />
-              <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 rounded-full bg-[#a0083d] px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-bold text-white shadow-lg shadow-[#a0083d]/25">
+              <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 rounded-full bg-[#a0083d] px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-bold text-white shadow-lg shadow-[#a0083d]/25 pointer-events-none">
                 Managed by School
               </div>
             </div>
             <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:grid-cols-1">
-              {school.gallery.slice(1).map((image) => (
+              {school.gallery.slice(1, 4).map((image, idx) => (
                 <img
                   key={image}
                   src={image}
                   alt={`${school.name} gallery`}
-                  className="h-[80px] sm:h-[130px] lg:h-[244px] w-full rounded-2xl object-cover"
+                  className="h-[80px] sm:h-[130px] lg:h-[158px] xl:h-[244px] w-full rounded-2xl object-cover cursor-pointer"
+                  onClick={() => setSelectedImageIndex(idx + 1)}
                 />
               ))}
             </div>
@@ -255,7 +293,7 @@ const SchoolDetail = () => {
           <button className="ml-2 font-semibold text-[#a0083d]">Read More</button>
         </div>
 
-        <div className="mt-4 sm:mt-5 flex w-full gap-2 sm:gap-3 overflow-x-auto rounded-2xl bg-white p-2 sm:p-3 shadow-sm md:grid md:grid-cols-5 md:overflow-visible">
+        <div className="mt-4 sm:mt-5 flex w-full gap-2 sm:gap-3 overflow-x-auto rounded-2xl bg-white p-2 sm:p-3 shadow-sm md:grid md:grid-cols-6 md:overflow-visible">
           {detailTabs.map(({ icon: Icon, label }) => (
             <button
               key={label}
@@ -287,13 +325,32 @@ const SchoolDetail = () => {
               {activeTabContent?.subtitle}
             </h3>
 
-            <div className="grid gap-3 sm:gap-4 text-xs sm:text-sm md:grid-cols-2">
-              {activeTabContent?.items.map(([label, value]) => (
-                <div key={label} className="rounded-xl bg-slate-50 p-3 sm:p-4">
-                  {label}: <span className="font-bold text-[#125fb9] block sm:inline mt-0.5 sm:mt-0">{value}</span>
-                </div>
-              ))}
-            </div>
+            {activeTab === 'Gallery' ? (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4">
+                {school.gallery.map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="group relative cursor-pointer overflow-hidden rounded-xl"
+                    onClick={() => setSelectedImageIndex(idx)}
+                  >
+                    <img
+                      src={img}
+                      alt={`Gallery view ${idx + 1}`}
+                      className="h-32 w-full object-cover transition-transform duration-300 group-hover:scale-110 sm:h-40"
+                    />
+                    <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid gap-3 sm:gap-4 text-xs sm:text-sm md:grid-cols-2">
+                {activeTabContent?.items.map(([label, value]) => (
+                  <div key={label} className="rounded-xl bg-slate-50 p-3 sm:p-4">
+                    {label}: <span className="font-bold text-[#125fb9] block sm:inline mt-0.5 sm:mt-0">{value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -335,6 +392,56 @@ const SchoolDetail = () => {
           </form>
         </aside>
       </section>
+
+      {/* Fullscreen Image Modal */}
+      {selectedImageIndex !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm">
+          <button
+            onClick={() => setSelectedImageIndex(null)}
+            className="absolute right-4 top-4 z-50 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20 sm:right-8 sm:top-8"
+          >
+            <X size={24} />
+          </button>
+
+          {school.gallery.length > 1 && (
+            <button
+              onClick={() =>
+                setSelectedImageIndex((prev) =>
+                  prev === 0 ? school.gallery.length - 1 : prev - 1
+                )
+              }
+              className="absolute left-4 z-50 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20 sm:left-8"
+            >
+              <ChevronLeft size={32} />
+            </button>
+          )}
+
+          <div className="relative flex max-h-screen w-full items-center justify-center px-12 sm:px-20">
+            <img
+              src={school.gallery[selectedImageIndex]}
+              alt={`Fullscreen gallery ${selectedImageIndex + 1}`}
+              className="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl"
+            />
+          </div>
+
+          {school.gallery.length > 1 && (
+            <button
+              onClick={() =>
+                setSelectedImageIndex((prev) =>
+                  prev === school.gallery.length - 1 ? 0 : prev + 1
+                )
+              }
+              className="absolute right-4 z-50 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20 sm:right-8"
+            >
+              <ChevronRight size={32} />
+            </button>
+          )}
+          
+          <div className="absolute bottom-4 left-0 right-0 text-center text-sm font-medium text-white/70">
+            {selectedImageIndex + 1} / {school.gallery.length}
+          </div>
+        </div>
+      )}
     </main>
     </>
   );
