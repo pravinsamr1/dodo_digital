@@ -30,7 +30,7 @@ const ContactSection = () => {
           </div>
 
           {/* RIGHT COLUMN: Compact Form */}
-          <div className="lg:w-7/12 p-8 lg:p-12 ">
+          <div className="lg:w-7/12 p-6 sm:p-8 lg:p-12 ">
             <header className="mb-8">
               <h3 className="text-3xl font-[500] text-slate-900 tracking-tight mb-2">For Enquirey</h3>
               <p className="text-slate-500 text-sm font-medium">Fill in your details and we'll handle the rest.</p>

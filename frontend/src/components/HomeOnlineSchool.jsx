@@ -100,9 +100,9 @@ const HomeOnlineSchool = () => {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header with View All Button */}
-        <div className="flex items-end justify-between mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-12">
           <div>
-            <h2 className="text-3xl font-black text-slate-900 mb-3 font-medium">
+            <h2 className="text-3xl md:text-2xl font-[500] text-slate-900 mb-3 md:font-[500]">
               Online Schools (NIOS)
             </h2>
             <p className="text-slate-500 font-medium">
@@ -110,7 +110,7 @@ const HomeOnlineSchool = () => {
             </p>
           </div>
           
-          <div className="relative group">
+          <div className="relative group w-fit">
             <button className="flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 rounded-xl text-sm font-bold hover:bg-indigo-100 transition-all duration-300 border border-indigo-100">
               Filter By
               <ChevronDown size={18} className="transition-transform duration-300 group-hover:rotate-180" />
