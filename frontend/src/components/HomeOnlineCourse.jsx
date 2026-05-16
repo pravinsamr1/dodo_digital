@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Star, Clock, Users, ChevronDown } from 'lucide-react';
 
 const HomeOnlineCourse = () => {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const courses = [
     {
       id: 1,
@@ -68,22 +69,25 @@ const HomeOnlineCourse = () => {
             </p>
           </div>
 
-          <div className="relative group w-fit">
-            <button className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-all duration-300 shadow-sm">
+          <div className="relative w-fit">
+            <button 
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-all duration-300 shadow-sm"
+            >
               All Categories
-              <ChevronDown size={18} />
+              <ChevronDown size={18} className={`transition-transform duration-300 ${isFilterOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            <div className="absolute right-0 top-full mt-3 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden">
-              <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+            <div className={`absolute right-0 top-full mt-3 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl transition-all duration-300 z-50 overflow-hidden ${isFilterOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
+              <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                 Development
               </button>
 
-              <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
+              <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
                 Design
               </button>
 
-              <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
+              <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
                 Marketing
               </button>
             </div>

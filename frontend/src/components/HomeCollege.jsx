@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MapPin, Star, ChevronDown } from 'lucide-react';
 
 const CollegeLocationSection = () => {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [userCoords, setUserCoords] = useState({
     latitude: 13.0827,
     longitude: 80.2707,
@@ -106,22 +107,25 @@ const CollegeLocationSection = () => {
             </p>
           </div>
           
-          <div className="relative group w-fit">
-            <button className="flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 rounded-xl text-sm font-bold hover:bg-indigo-100 transition-all duration-300 border border-indigo-100">
+          <div className="relative w-fit">
+            <button 
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 rounded-xl text-sm font-bold hover:bg-indigo-100 transition-all duration-300 border border-indigo-100"
+            >
               Filter By
-              <ChevronDown size={18} className="transition-transform duration-300 group-hover:rotate-180" />
+              <ChevronDown size={18} className={`transition-transform duration-300 ${isFilterOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            <div className="absolute right-0 top-full mt-3 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden">
-              <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+            <div className={`absolute right-0 top-full mt-3 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl transition-all duration-300 z-50 overflow-hidden ${isFilterOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
+              <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                 Engineering
               </button>
 
-              <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
+              <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
                 Arts & Science
               </button>
 
-              <button className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
+              <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-5 py-4 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100">
                 All Colleges
               </button>
             </div>
