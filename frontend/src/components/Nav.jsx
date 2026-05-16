@@ -419,32 +419,6 @@ return (
 
         <div className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-8">
           
-          <div className="flex flex-col gap-4">
-            {isAuthenticated() && getUser() ? (
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d]">
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getUser().name)}&background=a0083d&color=ffffff&bold=true`}
-                    alt="Profile"
-                    className="h-full w-full rounded-full object-cover shadow-sm"
-                  />
-                </div>
-                <div>
-                  <p className="font-bold text-slate-800 text-lg">{getUser().name}</p>
-                  <p className="text-sm text-slate-500 font-medium">Verified User</p>
-                </div>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => { openLoginModal(); setIsMobileMenuOpen(false); }}
-                className="w-full bg-[#a0083d] text-white px-6 py-4 rounded-2xl text-[16px] font-bold hover:bg-[#8a0734] transition-all active:scale-[0.98] shadow-md shadow-[#a0083d]/20"
-              >
-                Login / Register
-              </button>
-            )}
-          </div>
-
           <button
             type="button"
             onClick={() => { refreshLocation(); setIsMobileMenuOpen(false); }}
@@ -477,7 +451,7 @@ return (
             ))}
           </nav>
 
-          <div className="mt-auto pt-6 border-t border-slate-100">
+          <div className="pt-6 border-t border-slate-100">
             <button
               type="button"
               className="flex items-center gap-3 text-slate-700 px-4 py-4 w-full rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100"
@@ -503,6 +477,32 @@ return (
                   </button>
                 ))}
               </div>
+            )}
+          </div>
+
+          <div className="mt-auto flex flex-col gap-4">
+            {isAuthenticated() && getUser() ? (
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d]">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getUser().name)}&background=a0083d&color=ffffff&bold=true`}
+                    alt="Profile"
+                    className="h-full w-full rounded-full object-cover shadow-sm"
+                  />
+                </div>
+                <div>
+                  <p className="font-bold text-slate-800 text-lg">{getUser().name}</p>
+                  <p className="text-sm text-slate-500 font-medium">Verified User</p>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => { openLoginModal(); setIsMobileMenuOpen(false); }}
+                className="w-full bg-[#a0083d] text-white px-6 py-4 rounded-2xl text-[16px] font-bold hover:bg-[#8a0734] transition-all active:scale-[0.98] shadow-md shadow-[#a0083d]/20"
+              >
+                Login / Register
+              </button>
             )}
           </div>
         </div>
