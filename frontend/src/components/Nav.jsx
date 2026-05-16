@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Search, MapPin, ChevronDown, Menu, X, ArrowRight } from 'lucide-react';
 import logo from '../assets/logo.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useUserLocation } from '../context/LocationContext';
 import { useAuthModal } from '../context/AuthModalContext';
+import { isAuthenticated, getUser } from '../utils/auth';
 
 const Nav = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,6 +22,7 @@ const Nav = () => {
   const { openLoginModal } = useAuthModal();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -108,10 +110,13 @@ const Nav = () => {
     { name: 'Colleges', url: '/junior-colleges' },
     { name: 'Online Courses', url: '/online-courses' },
     { name: 'Academic Classes', url: '/academic-classes' },
+    { name: 'Abroad Education', url: '/abroad-education' },
+    { name: 'Institutes', url: '/institutes' },
+
   ];
 
   const countries = [
-    { name: 'India', flag: '🇮🇳' },
+    { name: 'Ind', flag: '🇮🇳' },
   ];
 
   // Temporary searchable data
@@ -206,43 +211,69 @@ return (
           
           {/* Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1">
-            {menuItems.map((item) => (
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.url;
+              return (
               <button 
                 key={item.name}
-                className="group px-4 py-2 text-[15px] cursor-pointer font-[600] text-slate-600 hover:text-indigo-600 rounded-xl transition-all flex items-center gap-2" onClick={() => item.url && navigate(item.url)}
+                className={`group h-16 px-4 text-[15px] cursor-pointer font-[600] transition-colors flex items-center gap-2 ${isActive ? 'text-[#125fb9]' : 'text-slate-600 hover:text-[#125fb9]'}`} onClick={() => item.url && navigate(item.url)}
               >
-                {item.name}
+                <div className="relative py-1">
+                  {item.name}
+                  {/* Animated Underline */}
+                  <span className={`absolute bottom-0 left-0 h-[2px] rounded-full bg-[#125fb9] transition-all duration-300 ease-out ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                </div>
                 {item.badge && (
-                  <span className="text-[12px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-md uppercase tracking-wider font-black">
+                  <span className="text-[12px] bg-[#125fb9]/10 text-[#125fb9] px-1.5 py-0.5 rounded-md uppercase tracking-wider font-black">
                     {item.badge}
                   </span>
                 )}
               </button>
-            ))}
+            )})}
           </nav>
         </div>
 
         {/* Top Utility Icons */}
-        <div className="flex items-center gap-3 md:gap-5">
-          <button
-            type="button"
-            onClick={() => refreshLocation()}
-            disabled={isLocationLoading}
-            title="Click to update location"
-            className="hidden items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100 sm:flex disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            <MapPin size={18} strokeWidth={2.5} className={isLocationLoading ? 'animate-pulse' : ''} />
-            <span className="text-sm font-medium">{isLocationLoading ? 'Updating...' : userLocation}</span>
-          </button>
+        <div className="hidden lg:flex items-center gap-4">
+          <div ref={countryDropdownRef} className="relative hidden sm:block">
+            <button
+              type="button"
+              onClick={() => setIsCountryOpen((prev) => !prev)}
+              className="flex items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-1.5 rounded-full transition-all hover:bg-slate-100 border border-transparent hover:border-slate-200"
+            >
+              <span className="text-lg">{selectedCountry.flag}</span>
+              <span className="text-sm font-medium">{selectedCountry.name}</span>
+              <ChevronDown
+                size={14}
+                strokeWidth={2.5}
+                className={`transition-transform duration-300 ${isCountryOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setIsMobileMenuOpen((current) => !current)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:text-[#125fb9] lg:hidden"
-            aria-label="Toggle mobile menu"
-          >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            <div
+              className={`absolute right-0 top-full mt-2 w-44 bg-white border border-slate-200 rounded-2xl shadow-xl transition-all duration-300 z-50 overflow-hidden ${
+                isCountryOpen
+                  ? 'opacity-100 visible translate-y-0'
+                  : 'opacity-0 invisible -translate-y-2'
+              }`}
+            >
+              {countries.map((country, index) => (
+                <button
+                  key={country.name}
+                  onClick={() => {
+                    setSelectedCountry(country);
+                    setIsCountryOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 text-left px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors ${
+                    index !== 0 ? 'border-t border-slate-100' : ''
+                  }`}
+                >
+                  <span className="text-lg">{country.flag}</span>
+                  {country.name}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -363,58 +394,52 @@ return (
             )}
           </div>
 
+
+          
+
           {/* Authentication Actions */}
           <div className="hidden items-center gap-3 w-full md:flex md:w-auto">
 
-            <div
-              ref={countryDropdownRef}
-              className="relative hidden sm:block"
-            >
-            <button
-              type="button"
-              onClick={() => setIsCountryOpen((prev) => !prev)}
-              className="flex items-center gap-2 text-slate-600 hover:text-[#125fb9] px-4 py-2 rounded-4xl transition-all hover:bg-slate-100 border border-slate-200 bg-white"
-            >
-              <span className="text-lg">{selectedCountry.flag}</span>
-              <span className="text-sm font-medium">{selectedCountry.name}</span>
-              <ChevronDown
-                size={16}
-                strokeWidth={2.5}
-                className={`transition-transform duration-300 ${isCountryOpen ? 'rotate-180' : ''}`}
-              />
-            </button>
+          <div className="flex items-center gap-3 md:gap-5">
+          <button
+            type="button"
+            onClick={() => refreshLocation()}
+            disabled={isLocationLoading}
+            title="Click to update location"
+            className="hidden items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100 sm:flex disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            <MapPin size={18} strokeWidth={2.5} className={isLocationLoading ? 'animate-pulse' : ''} />
+            <span className="text-sm font-medium">{isLocationLoading ? 'Updating...' : userLocation}</span>
+          </button>
 
-            <div
-              className={`absolute right-0 top-full mt-3 w-44 bg-white border border-slate-200 rounded-4xl shadow-xl transition-all duration-300 z-50 overflow-hidden ${
-                isCountryOpen
-                  ? 'opacity-100 visible translate-y-0'
-                  : 'opacity-0 invisible -translate-y-2'
-              }`}
-            >
-              {countries.map((country, index) => (
-                <button
-                  key={country.name}
-                  onClick={() => {
-                    setSelectedCountry(country);
-                    setIsCountryOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-3 text-left px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors ${
-                    index !== 0 ? 'border-t border-slate-100' : ''
-                  }`}
-                >
-                  <span className="text-lg">{country.flag}</span>
-                  {country.name}
-                </button>
-              ))}
-            </div>
-          </div>
-            <button
-              type="button"
-              onClick={() => openLoginModal()}
-              className="flex-1 md:flex-none bg-[#a0083d] text-white px-10 py-3 rounded-4xl text-[15px] font-[500]  hover:bg-[#8a0734] transition-all active:scale-[0.98]"
-            >
-              Login
-            </button>
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((current) => !current)}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:text-[#125fb9] lg:hidden"
+            aria-label="Toggle mobile menu"
+          >
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+
+
+            {isAuthenticated() && getUser() ? (
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d] cursor-pointer hover:bg-[#a0083d]/20 transition-all">
+                <img
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getUser().name)}&background=a0083d&color=ffffff&bold=true`}
+                  alt="Profile"
+                  className="h-full w-full rounded-full object-cover shadow-sm"
+                />
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => openLoginModal()}
+                className="flex-1 md:flex-none bg-[#a0083d] text-white px-10 py-3 rounded-4xl text-[15px] font-[500] hover:bg-[#8a0734] transition-all active:scale-[0.98]"
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       </div>

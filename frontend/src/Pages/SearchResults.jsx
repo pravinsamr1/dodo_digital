@@ -1,43 +1,61 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import ShareButton from '../components/ShareButton';
 import SchoolFilter from '../components/SchoolFilter';
 import { schools } from '../data/schools';
 import { useAuthModal } from '../context/AuthModalContext';
 import PageSEO from '../components/PageSEO';
-import { seoPages } from '../config/seo';
 
-const AllSchool = () => {
+const SearchResults = () => {
   const { openLoginModal } = useAuthModal();
   const [currentPage, setCurrentPage] = useState(1);
+  const location = useLocation();
+  
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get('q') || '';
+
+  const filteredSchools = schools.filter(school => {
+    if (!query) return true;
+    const lowerQuery = query.toLowerCase();
+    return (
+      (school.name && school.name.toLowerCase().includes(lowerQuery)) ||
+      (school.location && school.location.toLowerCase().includes(lowerQuery)) ||
+      (school.type && school.type.toLowerCase().includes(lowerQuery)) ||
+      (school.board && school.board.toLowerCase().includes(lowerQuery))
+    );
+  });
 
   const schoolsPerPage = 10;
-
   const indexOfLastSchool = currentPage * schoolsPerPage;
   const indexOfFirstSchool = indexOfLastSchool - schoolsPerPage;
+  const currentSchools = filteredSchools.slice(indexOfFirstSchool, indexOfLastSchool);
+  const totalPages = Math.ceil(filteredSchools.length / schoolsPerPage);
 
-  const currentSchools = schools.slice(0, indexOfLastSchool);
-
-  const totalPages = Math.ceil(schools.length / schoolsPerPage);
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [query, currentPage]);
 
   return (
     <>
-      <PageSEO {...seoPages.onlineSchools} />
+      <PageSEO title={`Search Results for "${query}"`} description="Search results for schools, colleges, and courses." />
     <div className="min-h-screen bg-slate-50 pb-10">
       <div
         className="relative mb-10 h-34 overflow-hidden bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80&w=1600')",
+            "url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1600')",
         }}
       >
         <div className="absolute inset-0 bg-slate-950/70" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <h1 className="text-3xl font-[500] text-white md:text-5xl">
-            Online Schools (NIOS)
+            Search Results
           </h1>
+          {query && (
+            <p className="mt-2 text-lg text-slate-200">
+              Showing results for "{query}"
+            </p>
+          )}
         </div>
       </div>
 
@@ -48,8 +66,11 @@ const AllSchool = () => {
         </div>
 
         <div className="min-w-0 flex-1 lg:pr-2">
-        {schools.length === 0 ? (
-          <p>No schools found.</p>
+        {filteredSchools.length === 0 ? (
+          <div className="bg-white rounded-2xl shadow-sm p-8 text-center border border-slate-100">
+            <h2 className="text-xl font-semibold text-slate-800">No results found</h2>
+            <p className="text-slate-500 mt-2">Try adjusting your search query or filters.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
             {currentSchools.map((school) => (
@@ -104,26 +125,26 @@ const AllSchool = () => {
 
                     {/* RATING */}
                     <div className="flex shrink-0 items-center gap-2 text-sm text-yellow-500">
-                      {'★★★★★'.slice(0, Math.round(school.rating))}
-                      <span className="text-slate-500">{school.rating}</span>
+                      {'★★★★★'.slice(0, Math.round(school.rating || 5))}
+                      <span className="text-slate-500">{school.rating || 5}</span>
                     </div>
                   </div>
 
                   {/* FEES BAR */}
                   <div className="bg-green-600 text-white text-center py-2 rounded-lg text-sm font-medium">
-                    Fees - ₹{school.dayFee} / per annum
+                    Fees - ₹{school.dayFee || 'N/A'} / per annum
                   </div>
 
                   {/* DETAILS GRID */}
                   <div className="grid grid-cols-2 gap-2 text-xs border border-[#dbdbdb] rounded-lg overflow-hidden">
                     <div className="bg-slate-50 p-2">School type</div>
-                    <div className="p-2 font-medium">{school.type}</div>
+                    <div className="p-2 font-medium">{school.type || 'N/A'}</div>
                     <div className="bg-slate-50 p-2">Board</div>
-                    <div className="p-2 font-medium">{school.board}</div>
+                    <div className="p-2 font-medium">{school.board || 'N/A'}</div>
                     <div className="bg-slate-50 p-2">Gender</div>
-                    <div className="p-2 font-medium">{school.gender}</div>
+                    <div className="p-2 font-medium">{school.gender || 'N/A'}</div>
                     <div className="bg-slate-50 p-2">Grade</div>
-                    <div className="p-2 font-medium">{school.grade}</div>
+                    <div className="p-2 font-medium">{school.grade || 'N/A'}</div>
                   </div>
 
                   {/* DESCRIPTION */}
@@ -136,14 +157,14 @@ const AllSchool = () => {
                     <button
                       type="button"
                       onClick={() => openLoginModal(school._id)}
-                      className="flex-1 bg-slate-200 text-slate-700 py-2 rounded-lg text-sm cursor-pointer"
+                      className="flex-1 bg-slate-200 text-slate-700 py-2 rounded-lg text-sm"
                     >
                       Get a Call
                     </button>
                     <button
                       type="button"
                       onClick={() => openLoginModal(school._id)}
-                      className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm cursor-pointer"
+                      className="flex-1 bg-[#125fb9] text-white py-2 rounded-lg text-sm"
                     >
                       View School
                     </button>
@@ -156,7 +177,7 @@ const AllSchool = () => {
         )}
 
         {/* PAGINATION */}
-        {schools.length > schoolsPerPage && (
+        {filteredSchools.length > schoolsPerPage && (
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => {
@@ -205,4 +226,4 @@ const AllSchool = () => {
   );
 };
 
-export default AllSchool; 
+export default SearchResults;

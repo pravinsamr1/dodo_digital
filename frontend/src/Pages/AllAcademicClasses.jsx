@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Share2, UserCheck, Clock, Users } from 'lucide-react';
+import { UserCheck, Clock, Users } from 'lucide-react';
+import ShareButton from '../components/ShareButton';
 import AcademicClassFilter from '../components/AcademicClassFilter';
 import { academicClasses } from '../data/academicClasses';
 import { useAuthModal } from '../context/AuthModalContext';
@@ -127,13 +128,7 @@ const AllAcademicClasses = () => {
                                 ? `Teacher: ${activity.teacherName}`
                                 : 'Teacher after fee payment'}
                             </span>
-                            <button
-                              type="button"
-                              aria-label={`Share ${activity.name}`}
-                              className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-sm backdrop-blur-sm transition-all hover:bg-[#125fb9] hover:text-white"
-                            >
-                              <Share2 size={16} />
-                            </button>
+                            <ShareButton title={activity.name} />
                           </div>
                         </div>
 

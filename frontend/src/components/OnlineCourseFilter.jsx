@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 
-const OnlineCourseFilter = () => {
+const OnlineCourseFilter = ({ onFilterChange }) => {
   const [duration, setDuration] = useState('3 Months');
-  const [selectedCategory, setSelectedCategory] = useState('Development');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [level, setLevel] = useState('Beginner');
   const [learningMode, setLearningMode] = useState('Self-paced');
   const [price, setPrice] = useState(4999);
 
   const filterOptions = {
-    categories: [
-      'Development',
-      'Design',
-      'Marketing',
-      'Programming',
-      'Business',
-      'Data Science',
-    ],
+    categories: ['All', 'Languages', 'Tuition Class', 'Skill Development'],
     levels: ['Beginner', 'Intermediate', 'Advanced'],
     durations: ['1 Month', '3 Months', '6 Months', '9 Months', '12 Months'],
     learningModes: ['Self-paced', 'Live Classes', 'Hybrid'],
   };
+
+  React.useEffect(() => {
+    if (onFilterChange) {
+      onFilterChange({ category: selectedCategory, duration, level, learningMode, price });
+    }
+  }, [selectedCategory, duration, level, learningMode, price, onFilterChange]);
 
   const formatPrice = (amount) =>
     new Intl.NumberFormat('en-IN', {
@@ -31,7 +30,7 @@ const OnlineCourseFilter = () => {
 
   const clearFilters = () => {
     setDuration('3 Months');
-    setSelectedCategory('Development');
+    setSelectedCategory('All');
     setLevel('Beginner');
     setLearningMode('Self-paced');
     setPrice(4999);

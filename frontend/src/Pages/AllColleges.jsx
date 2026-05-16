@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Share2 } from 'lucide-react';
+import ShareButton from '../components/ShareButton';
 import CollegeFilter from '../components/CollegeFilter';
 import { colleges } from '../data/colleges';
 import { useAuthModal } from '../context/AuthModalContext';
@@ -103,13 +103,7 @@ const AllColleges = () => {
                         <span className="rounded-md bg-[#a0083d] px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-[#a0083d]/25">
                           {college.collegeType}
                         </span>
-                        <button
-                          type="button"
-                          aria-label={`Share ${college.name}`}
-                          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-sm backdrop-blur-sm transition-all hover:bg-[#125fb9] hover:text-white"
-                        >
-                          <Share2 size={16} />
-                        </button>
+                        <ShareButton title={college.name} />
                       </div>
                     </div>
 

@@ -1,15 +1,24 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { isAuthenticated } from '../utils/auth';
 
 const AuthModalContext = createContext(null);
 
 export const AuthModalProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [pendingSchoolId, setPendingSchoolId] = useState(null);
+  const navigate = useNavigate();
 
   const openLoginModal = useCallback((schoolId = null) => {
+    if (isAuthenticated()) {
+      if (schoolId) {
+        navigate(`/schools/${schoolId}`);
+      }
+      return;
+    }
     setPendingSchoolId(schoolId);
     setIsOpen(true);
-  }, []);
+  }, [navigate]);
 
   const closeLoginModal = useCallback(() => {
     setIsOpen(false);

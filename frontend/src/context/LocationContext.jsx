@@ -92,9 +92,14 @@ export const LocationProvider = ({ children }) => {
           ?.trim();
 
         // Format strictly as "Neighborhood, City" (e.g., "Porur, Chennai")
-        const formattedLocation = normalizedArea
-          ? `${normalizedArea}, ${city}`
-          : city;
+        // Desktop IP-based geolocation often lacks 'area'/'suburb' data. If missing, use a fallback.
+        let formattedLocation = city;
+        if (normalizedArea && normalizedArea.toLowerCase() !== city.toLowerCase()) {
+          formattedLocation = `${normalizedArea}, ${city}`;
+        } else {
+          // If no specific neighborhood is found (common on desktop), use a default
+          formattedLocation = getRandomDefaultLocation();
+        }
 
         if (isMounted.current) {
           setUserLocation(formattedLocation || '');

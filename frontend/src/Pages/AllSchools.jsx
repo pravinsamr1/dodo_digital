@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Share2 } from 'lucide-react';
+import ShareButton from '../components/ShareButton';
 import SchoolFilter from '../components/SchoolFilter';
 import { schools } from '../data/schools';
 import { useAuthModal } from '../context/AuthModalContext';
@@ -30,7 +30,7 @@ const AllSchools = () => {
         className="relative mb-10 h-34 overflow-hidden bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80&w=1600')",
+            "url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1600')",
         }}
       >
         <div className="absolute inset-0 bg-slate-950/70" />
@@ -78,13 +78,7 @@ const AllSchools = () => {
                     <span className="rounded-md bg-[#a0083d] px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-[#a0083d]/25">
                       Managed by School
                     </span>
-                    <button
-                      type="button"
-                      aria-label={`Share ${school.name}`}
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-sm backdrop-blur-sm transition-all hover:bg-[#125fb9] hover:text-white"
-                    >
-                      <Share2 size={16} />
-                    </button>
+                    <ShareButton title={school.name} url={`${window.location.origin}/schools/${school._id}`} />
                   </div>
                 </div>
 

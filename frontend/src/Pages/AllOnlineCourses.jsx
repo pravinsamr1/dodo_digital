@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Share2 } from 'lucide-react';
+import React, { useEffect, useState, useCallback } from 'react';
+import ShareButton from '../components/ShareButton';
 import OnlineCourseFilter from '../components/OnlineCourseFilter';
 import { onlineCourses } from '../data/onlineCourses';
 import { useAuthModal } from '../context/AuthModalContext';
@@ -9,13 +9,25 @@ import { seoPages } from '../config/seo';
 const AllOnlineCourses = () => {
   const { openLoginModal } = useAuthModal();
   const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({ category: 'All' });
+
+  const handleFilterChange = useCallback((newFilters) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  }, []);
+
+  const filteredCourses = onlineCourses.filter(course => {
+    if (!filters || filters.category === 'All') return true;
+    return course.category === filters.category;
+  });
 
   const coursesPerPage = 10;
 
   const indexOfLastCourse = currentPage * coursesPerPage;
-  const currentCourses = onlineCourses.slice(0, indexOfLastCourse);
+  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
 
-  const totalPages = Math.ceil(onlineCourses.length / coursesPerPage);
+  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,7 +53,7 @@ const AllOnlineCourses = () => {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         <div className="flex flex-col gap-6 lg:flex-row">
           <div className="lg:w-72 lg:shrink-0">
-            <OnlineCourseFilter />
+            <OnlineCourseFilter onFilterChange={handleFilterChange} />
           </div>
 
           <div className="min-w-0 flex-1 lg:pr-2">
@@ -74,13 +86,7 @@ const AllOnlineCourses = () => {
                         <span className="rounded-md bg-[#a0083d] px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-[#a0083d]/25">
                           {course.level}
                         </span>
-                        <button
-                          type="button"
-                          aria-label={`Share ${course.title}`}
-                          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-sm backdrop-blur-sm transition-all hover:bg-[#125fb9] hover:text-white"
-                        >
-                          <Share2 size={16} />
-                        </button>
+                        <ShareButton title={course.title} />
                       </div>
                     </div>
 

@@ -1,16 +1,31 @@
 const AUTH_TOKEN_KEY = 'portal_auth_token';
 
-export const getAuthToken = () => localStorage.getItem(AUTH_TOKEN_KEY);
+export const getAuthToken = () => sessionStorage.getItem(AUTH_TOKEN_KEY);
 
 export const setAuthToken = (token) => {
-  localStorage.setItem(AUTH_TOKEN_KEY, token);
+  sessionStorage.setItem(AUTH_TOKEN_KEY, token);
 };
 
 export const clearAuthToken = () => {
-  localStorage.removeItem(AUTH_TOKEN_KEY);
+  sessionStorage.removeItem(AUTH_TOKEN_KEY);
 };
 
 export const isAuthenticated = () => Boolean(getAuthToken());
+
+export const getUser = () => {
+  const token = getAuthToken();
+  if (!token) return null;
+  try {
+    const json = decodeURIComponent(
+      Array.from(atob(token))
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(json);
+  } catch (e) {
+    return null;
+  }
+};
 
 export const createAuthToken = ({ name, phone }) => {
   const payload = {

@@ -12,12 +12,15 @@ import AllSchools from './Pages/AllSchools'
 import AllColleges from './Pages/AllColleges'
 import AllOnlineCourses from './Pages/AllOnlineCourses'
 import AllAcademicClasses from './Pages/AllAcademicClasses'
+import SearchResults from './Pages/SearchResults'
+import AbroadEducation from './Pages/AbroadEducation'
+import Institutes from './Pages/Institutes'
 
 const App = () => {
   return (
     <LocationProvider>
-      <AuthModalProvider>
-        <Router>
+      <Router>
+        <AuthModalProvider>
           <Nav />
           <LoginModal />
           <Routes>
@@ -28,10 +31,13 @@ const App = () => {
             <Route path="/online-courses" element={<AllOnlineCourses/>} />
             <Route path="/academic-classes" element={<AllAcademicClasses/>} />
             <Route path="/schools/:id" element={<SchoolDetail/>} />
+            <Route path="/search" element={<SearchResults/>} />
+            <Route path="/abroad-education" element={<AbroadEducation/>} />
+            <Route path="/institutes" element={<Institutes/>} />
           </Routes>
-        </Router>
+        </AuthModalProvider>
         <Footer />
-      </AuthModalProvider>
+      </Router>
     </LocationProvider>
   )
 }

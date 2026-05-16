@@ -10,7 +10,6 @@ import {
   Info,
   MapPin,
   Phone,
-  Share2,
   Users,
   Image as ImageIcon,
   X,
@@ -18,6 +17,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { schools } from '../data/schools';
+import ShareButton from '../components/ShareButton';
 import PageSEO from '../components/PageSEO';
 import { buildSchoolDetailSeo, buildBreadcrumbSchema } from '../config/seo';
 
@@ -275,9 +275,7 @@ const SchoolDetail = () => {
                 <button className="flex flex-1 sm:flex-none h-11 w-11 sm:w-11 items-center justify-center rounded-xl border border-[#125fb9]/30 text-[#125fb9] transition-all hover:bg-[#125fb9] hover:text-white">
                   <Heart size={19} />
                 </button>
-                <button className="flex flex-1 sm:flex-none h-11 w-11 sm:w-11 items-center justify-center rounded-xl border border-[#125fb9]/30 text-[#125fb9] transition-all hover:bg-[#125fb9] hover:text-white">
-                  <Share2 size={19} />
-                </button>
+                <ShareButton title={school.name} className="flex flex-1 sm:flex-none h-11 w-11 sm:w-11 items-center justify-center rounded-xl border border-[#125fb9]/30 text-[#125fb9] transition-all hover:bg-[#125fb9] hover:text-white" iconSize={19} />
               </div>
               <div className="grid w-full grid-cols-2 gap-3 text-xs sm:text-sm font-bold text-emerald-600 xl:grid-cols-1">
                 <p className="rounded-2xl bg-emerald-50 px-3 py-2 sm:px-4 sm:py-3 text-center xl:text-left">₹ {school.dayFee} <span className="font-medium block sm:inline">Day</span></p>
