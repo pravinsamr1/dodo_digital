@@ -70,7 +70,7 @@ const BannerSlider = () => {
                     Find The Best Schools In Chennai
                   </h2>
 
-                  <p className="text-base lg:text-lg text-slate-200 max-w-xl mb-8 leading-relaxed">
+                  <p className="text-[14px] lg:text-lg text-slate-200 max-w-xl mb-8 leading-relaxed">
                     Compare CBSE, Matriculation and International schools with reviews, ratings and admission details.
                   </p>
 
