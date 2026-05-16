@@ -114,6 +114,14 @@ const LoginModal = () => {
       <div className="relative z-10 flex w-full max-w-6xl flex-col animate-modalSlide overflow-hidden rounded-2xl bg-white shadow-2xl md:min-h-[650px] md:rounded-3xl lg:flex-row">
         <div className="flex w-full flex-col bg-slate-50 lg:w-1/2 lg:border-r lg:border-slate-100">
           <div className="relative h-[220px] shrink-0 overflow-hidden sm:h-[280px] md:h-[340px] lg:h-[480px]">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="absolute right-4 top-4 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-slate-800 shadow-xl backdrop-blur-md transition hover:bg-white"
+              aria-label="Close"
+            >
+              <X size={22} strokeWidth={2.5} />
+            </button>
             <img
               src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800"
               alt="Family exploring schools"
@@ -123,15 +131,6 @@ const LoginModal = () => {
         </div>
 
         <div className="relative flex w-full flex-col justify-center bg-[#f8f9fb] px-5 py-8 sm:px-8 md:px-12 lg:w-1/2 lg:px-14">
-          <button
-            type="button"
-            onClick={handleClose}
-            className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-[#125fb9] text-white shadow-lg transition hover:bg-[#0d4a91]"
-            aria-label="Close"
-          >
-            <X size={18} />
-          </button>
-
           <h2
             id="login-modal-title"
             className="mb-6 mt-2 text-center text-lg font-[500] leading-snug text-slate-800 sm:text-2xl md:text-3xl"
