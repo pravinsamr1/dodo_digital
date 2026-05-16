@@ -111,8 +111,8 @@ const LoginModal = () => {
         onClick={handleClose}
       />
 
-      <div className="relative z-10 flex min-h-[650px] w-full max-w-6xl animate-modalSlide overflow-hidden rounded-3xl bg-white shadow-2xl">
-        <div className="hidden w-1/2 flex-col border-r border-slate-100 bg-slate-50 md:flex">
+      <div className="relative z-10 flex min-h-[620px] w-full max-w-6xl animate-modalSlide overflow-hidden rounded-2xl bg-white shadow-2xl md:min-h-[650px] md:rounded-3xl">
+        <div className="hidden w-1/2 flex-col border-r border-slate-100 bg-slate-50 lg:flex">
           <div className="relative h-[480px] shrink-0 overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800"
@@ -137,7 +137,7 @@ const LoginModal = () => {
           </ul>
         </div>
 
-        <div className="relative flex w-1/2 flex-col justify-center bg-[#f8f9fb] px-8 py-8 sm:px-14">
+        <div className="relative flex w-full flex-col justify-center bg-[#f8f9fb] px-5 py-8 sm:px-8 md:px-12 lg:w-1/2 lg:px-14">
           <button
             type="button"
             onClick={handleClose}
@@ -149,14 +149,14 @@ const LoginModal = () => {
 
           <h2
             id="login-modal-title"
-            className="mb-6 mt-2 text-center text-xl font-[500] leading-snug text-slate-800 sm:text-3xl"
+            className="mb-6 mt-2 text-center text-lg font-[500] leading-snug text-slate-800 sm:text-2xl md:text-3xl"
           >
             You are just one step away from finding the best school
           </h2>
 
           <form
             onSubmit={otpSent ? handleVerifyOtp : handleGetOtp}
-            className="mx-auto w-full max-w-md space-y-5"
+            className="mx-auto w-full max-w-md space-y-4 sm:space-y-5"
           >
             <div>
               <label htmlFor="login-name" className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -236,7 +236,7 @@ const LoginModal = () => {
 
             <button
               type="submit"
-              className="w-full rounded-xl bg-[#125fb9] py-3.5 text-sm font-semibold text-white transition hover:bg-[#0d4a91] active:scale-[0.98]"
+              className="w-full rounded-xl bg-[#125fb9] py-3 text-sm font-semibold text-white transition hover:bg-[#0d4a91] active:scale-[0.98] sm:py-3.5"
             >
               {otpSent ? 'Verify & Continue' : 'Get OTP'}
             </button>
@@ -256,7 +256,7 @@ const LoginModal = () => {
             )}
           </form>
 
-          <p className="mx-auto mt-4 max-w-md text-center text-[11px] leading-relaxed text-slate-500">
+          <p className="mx-auto mt-4 max-w-md text-center text-[10px] leading-relaxed text-slate-500 sm:text-[11px]">
             By logging in, you consent to our website&apos;s{' '}
             <span className="font-semibold text-[#a0083d]">Terms &amp; Conditions</span>, and authorize
             us to reach out via phone, SMS, WhatsApp, or email.
