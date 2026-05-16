@@ -234,8 +234,17 @@ return (
         </div>
 
         {/* Top Utility Icons */}
-        <div className="hidden lg:flex items-center gap-4">
-          <div ref={countryDropdownRef} className="relative hidden sm:block">
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:text-[#125fb9] lg:hidden"
+            aria-label="Open mobile menu"
+          >
+            <Menu size={20} />
+          </button>
+
+          <div ref={countryDropdownRef} className="relative hidden lg:block">
             <button
               type="button"
               onClick={() => setIsCountryOpen((prev) => !prev)}
@@ -277,50 +286,7 @@ return (
         </div>
       </div>
 
-      <div
-        className={`overflow-hidden border-b border-slate-200 bg-white transition-all duration-300 ease-out lg:hidden ${
-          isMobileMenuOpen
-            ? 'max-h-96 opacity-100'
-            : 'max-h-0 border-transparent opacity-0'
-        }`}
-      >
-        <div
-          className={`px-6 py-4 transition-all duration-300 ease-out ${
-            isMobileMenuOpen ? 'translate-y-0' : '-translate-y-3'
-          }`}
-        >
-        <button
-          type="button"
-          onClick={() => refreshLocation()}
-          disabled={isLocationLoading}
-          className="mb-4 flex w-full items-center gap-2 rounded-xl bg-slate-50 px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-70"
-        >
-          <MapPin size={17} className={`text-[#125fb9] ${isLocationLoading ? 'animate-pulse' : ''}`} />
-          <span className="truncate">{isLocationLoading ? 'Updating...' : userLocation}</span>
-        </button>
 
-          <nav className="grid gap-2">
-            {menuItems.map((item) => (
-              <button
-                key={item.name}
-                type="button"
-                className="flex items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-bold text-slate-700 transition-all hover:bg-[#125fb9]/10 hover:text-[#125fb9]"
-                onClick={() => {
-                  if (item.url) navigate(item.url);
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <span>{item.name}</span>
-                {item.badge && (
-                  <span className="text-[9px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-md uppercase tracking-wider font-black">
-                    {item.badge}
-                  </span>
-                )}
-              </button>
-            ))}
-          </nav>
-        </div>
-      </div>
 
       {/* ROW 2: Command Center (Search & Auth) */}
       <div className="bg-[#fcfcfd] border-t border-slate-200 py-2">
@@ -401,27 +367,17 @@ return (
           <div className="hidden items-center gap-3 w-full md:flex md:w-auto">
 
           <div className="flex items-center gap-3 md:gap-5">
-          <button
-            type="button"
-            onClick={() => refreshLocation()}
-            disabled={isLocationLoading}
-            title="Click to update location"
-            className="hidden items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100 sm:flex disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            <MapPin size={18} strokeWidth={2.5} className={isLocationLoading ? 'animate-pulse' : ''} />
-            <span className="text-sm font-medium">{isLocationLoading ? 'Updating...' : userLocation}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setIsMobileMenuOpen((current) => !current)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:text-[#125fb9] lg:hidden"
-            aria-label="Toggle mobile menu"
-          >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-
+            <button
+              type="button"
+              onClick={() => refreshLocation()}
+              disabled={isLocationLoading}
+              title="Click to update location"
+              className="hidden items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100 sm:flex disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              <MapPin size={18} strokeWidth={2.5} className={isLocationLoading ? 'animate-pulse' : ''} />
+              <span className="text-sm font-medium">{isLocationLoading ? 'Updating...' : userLocation}</span>
+            </button>
+          </div>
 
             {isAuthenticated() && getUser() ? (
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d] cursor-pointer hover:bg-[#a0083d]/20 transition-all">
@@ -443,6 +399,115 @@ return (
           </div>
         </div>
       </div>
+
+      {/* Full Screen Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-white z-[100] flex flex-col transition-all duration-300 ease-in-out lg:hidden ${
+          isMobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'
+        }`}
+      >
+        <div className="flex items-center justify-between px-6 h-16 border-b border-gray-100 shrink-0">
+          <img src={logo} alt="Logo" className="h-14 w-auto object-contain" onClick={() => { navigate('/'); setIsMobileMenuOpen(false); }} />
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 shadow-sm transition-all hover:text-[#125fb9] hover:bg-slate-100"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-8">
+          
+          <div className="flex flex-col gap-4">
+            {isAuthenticated() && getUser() ? (
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d]">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getUser().name)}&background=a0083d&color=ffffff&bold=true`}
+                    alt="Profile"
+                    className="h-full w-full rounded-full object-cover shadow-sm"
+                  />
+                </div>
+                <div>
+                  <p className="font-bold text-slate-800 text-lg">{getUser().name}</p>
+                  <p className="text-sm text-slate-500 font-medium">Verified User</p>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => { openLoginModal(); setIsMobileMenuOpen(false); }}
+                className="w-full bg-[#a0083d] text-white px-6 py-4 rounded-2xl text-[16px] font-bold hover:bg-[#8a0734] transition-all active:scale-[0.98] shadow-md shadow-[#a0083d]/20"
+              >
+                Login / Register
+              </button>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => { refreshLocation(); setIsMobileMenuOpen(false); }}
+            disabled={isLocationLoading}
+            className="flex w-full items-center gap-3 rounded-2xl bg-[#125fb9]/5 border border-[#125fb9]/10 px-5 py-4 text-[15px] font-semibold text-[#125fb9] disabled:opacity-70"
+          >
+            <MapPin size={20} className={isLocationLoading ? 'animate-pulse' : ''} />
+            <span className="truncate">{isLocationLoading ? 'Updating location...' : userLocation}</span>
+          </button>
+
+          <nav className="flex flex-col gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 pl-2">Navigation</h3>
+            {menuItems.map((item) => (
+              <button
+                key={item.name}
+                type="button"
+                className="flex items-center justify-between rounded-2xl px-4 py-4 text-left text-[16px] font-bold text-slate-700 transition-all hover:bg-slate-50 active:bg-slate-100 border border-transparent hover:border-slate-100"
+                onClick={() => {
+                  if (item.url) navigate(item.url);
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <span>{item.name}</span>
+                {item.badge && (
+                  <span className="text-[10px] bg-[#125fb9]/10 text-[#125fb9] px-2.5 py-1 rounded-md uppercase tracking-wider font-black">
+                    {item.badge}
+                  </span>
+                )}
+              </button>
+            ))}
+          </nav>
+
+          <div className="mt-auto pt-6 border-t border-slate-100">
+            <button
+              type="button"
+              className="flex items-center gap-3 text-slate-700 px-4 py-4 w-full rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100"
+              onClick={() => setIsCountryOpen((prev) => !prev)}
+            >
+              <span className="text-2xl">{selectedCountry.flag}</span>
+              <span className="text-[16px] font-bold flex-1 text-left">{selectedCountry.name}</span>
+              <ChevronDown size={20} className={`transition-transform duration-300 text-slate-400 ${isCountryOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isCountryOpen && (
+              <div className="mt-2 pl-16 pr-4 flex flex-col gap-2">
+                 {countries.map((country) => (
+                  <button
+                    key={country.name}
+                    onClick={() => {
+                      setSelectedCountry(country);
+                      setIsCountryOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 text-left py-3 px-4 rounded-xl text-[15px] font-semibold text-slate-600 hover:bg-slate-50"
+                  >
+                    <span className="text-xl">{country.flag}</span>
+                    {country.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
     </header>
   );
 };
