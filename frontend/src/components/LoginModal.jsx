@@ -111,7 +111,7 @@ const LoginModal = () => {
         onClick={handleClose}
       />
 
-      <div className="relative z-10 flex w-full max-w-6xl flex-col animate-modalSlide overflow-hidden rounded-2xl bg-white shadow-2xl md:min-h-[650px] md:rounded-3xl lg:flex-row">
+      <div className="relative z-10 flex w-full max-w-5xl flex-col animate-modalSlide overflow-hidden rounded-2xl bg-white shadow-2xl md:min-h-[580px] md:rounded-3xl lg:flex-row">
         <button
           type="button"
           onClick={handleClose}
@@ -121,7 +121,7 @@ const LoginModal = () => {
           <X size={20} strokeWidth={2.5} />
         </button>
         <div className="flex w-full flex-col bg-slate-50 lg:w-1/2 lg:border-r lg:border-slate-100">
-          <div className="relative h-[220px] shrink-0 overflow-hidden sm:h-[280px] md:h-[340px] lg:h-[480px]">
+          <div className="relative h-[200px] shrink-0 overflow-hidden sm:h-[240px] md:h-[300px] lg:h-[400px]">
 
             <img
               src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800"
@@ -129,8 +129,8 @@ const LoginModal = () => {
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="hidden lg:block mt-auto bg-white/95 backdrop-blur-sm px-8 py-10">
-            <p className="mb-6 text-xl font-[500] text-slate-800">
+          <div className="hidden lg:block mt-auto bg-white/95 backdrop-blur-sm px-8 py-8">
+            <p className="mb-5 text-lg font-[500] text-slate-800">
               <span className="text-3xl font-[500] text-[#125fb9]">3</span> Reasons to register
             </p>
 
