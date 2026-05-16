@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Search, MapPin, ChevronDown, Menu, X } from 'lucide-react';
+import { Search, MapPin, ChevronDown, Menu, X, ArrowRight } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { useUserLocation } from '../context/LocationContext';
@@ -313,9 +313,11 @@ return (
                     navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
                   }
                 }}
-                className="h-full bg-[#125fb9] hover:bg-[#0d4a91] text-white px-4 md:px-8 rounded-4xl text-[11px] font-medium tracking-[0.1em] transition-all flex items-center justify-center active:scale-95"
+                className="h-full bg-[#125fb9] hover:bg-[#0d4a91] text-white px-4 md:px-6 py-4.5 rounded-full text-sm md:text-[15px] font-[400] transition-all flex items-center gap-2 justify-center shadow-md hover:shadow-lg active:scale-95"
               >
-                Search
+                {/* <Search size={16} strokeWidth={2.5} /> */}
+                <span className="hidden sm:block">Search</span>
+                {/* <ArrowRight size={15} strokeWidth={2.5} className="hidden md:block" /> */}
               </button>
             </div>
 
