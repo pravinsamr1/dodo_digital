@@ -1,36 +1,47 @@
-import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef, useCallback } from 'react';
 
 const LocationContext = createContext(null);
 
 export const LocationProvider = ({ children }) => {
-  const [userLocation, setUserLocation] = useState('');
-  const [coords, setCoords] = useState(null);
-  const [isLocationLoading, setIsLocationLoading] = useState(true);
+  const [userLocation, setUserLocation] = useState(() => {
+    const cached = sessionStorage.getItem('userLocation');
+    return cached === 'Chennai, India' ? '' : (cached || '');
+  });
+  const [coords, setCoords] = useState(() => {
+    const savedCoords = sessionStorage.getItem('userCoords');
+    return savedCoords ? JSON.parse(savedCoords) : null;
+  });
+  const [isLocationLoading, setIsLocationLoading] = useState(() => {
+    const cached = sessionStorage.getItem('userLocation');
+    return !cached || cached === 'Chennai, India';
+  });
   
   // Track unmount status to prevent state updates on unmounted component
   const isMounted = useRef(true);
 
-  useEffect(() => {
-    isMounted.current = true;
+  const fetchLocation = useCallback((forceRefresh = false) => {
+    if (!forceRefresh) {
+      const cachedLoc = sessionStorage.getItem('userLocation');
+      if (cachedLoc && cachedLoc !== 'Chennai, India') {
+        if (isMounted.current) setIsLocationLoading(false);
+        return;
+      }
+    } else {
+      if (isMounted.current) setIsLocationLoading(true);
+    }
 
     if (!navigator.geolocation) {
-      setIsLocationLoading(false);
+      if (isMounted.current) setIsLocationLoading(false);
       return;
     }
 
-    const watchId = navigator.geolocation.watchPosition(
-      async (position) => {
+    const handleSuccess = async (position) => {
         const { latitude, longitude, accuracy } = position.coords;
 
-        // EXTRA PRECISION CHECK: Reject the data if accuracy radius is worse than 150 meters
-        // You can adjust this threshold (in meters) based on your needs.
-        if (accuracy > 150) {
-          console.log(`Skipping update: Accuracy too low (${accuracy}m)`);
-          return; 
-        }
-
+      const newCoords = { latitude, longitude, accuracy };
         if (isMounted.current) {
-          setCoords({ latitude, longitude, accuracy });
+        setCoords(newCoords);
+        sessionStorage.setItem('userCoords', JSON.stringify(newCoords));
         }
 
         try {
@@ -84,35 +95,45 @@ export const LocationProvider = ({ children }) => {
             : city;
 
           if (isMounted.current) {
-            setUserLocation(formattedLocation || '');
+          setUserLocation(formattedLocation || '');
+          sessionStorage.setItem('userLocation', formattedLocation || '');
           }
         } catch (error) {
-          if (isMounted.current) setUserLocation('Chennai, India');
+        if (isMounted.current) {
+          setUserLocation('Chennai, India');
+          sessionStorage.setItem('userLocation', 'Chennai, India');
+        }
         } finally {
           if (isMounted.current) setIsLocationLoading(false);
         }
-      },
-      () => {
+    };
+
+    const handleError = () => {
         if (isMounted.current) {
           setUserLocation('Chennai, India');
+        sessionStorage.setItem('userLocation', 'Chennai, India');
           setIsLocationLoading(false);
         }
-      },
-      {
+    };
+
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError, {
         enableHighAccuracy: true, // Asks device to use GPS hardware if available
         timeout: 15000,           // Increased slightly to give hardware time to find a lock
         maximumAge: 0,            // Force it to get a fresh location, not a cached one
-      }
-    );
+    });
+  }, []);
+
+  useEffect(() => {
+    isMounted.current = true;
+    fetchLocation();
 
     return () => {
       isMounted.current = false;
-      navigator.geolocation.clearWatch(watchId);
     };
-  }, []);
+  }, [fetchLocation]);
 
   return (
-    <LocationContext.Provider value={{ coords, isLocationLoading, userLocation }}>
+    <LocationContext.Provider value={{ coords, isLocationLoading, userLocation, refreshLocation: () => fetchLocation(true) }}>
       {children}
     </LocationContext.Provider>
   );

@@ -17,7 +17,7 @@ const Nav = () => {
     flag: '🇮🇳',
   });
   const countryDropdownRef = useRef(null);
-  const { userLocation } = useUserLocation();
+  const { userLocation, isLocationLoading, refreshLocation } = useUserLocation();
   const { openLoginModal } = useAuthModal();
 
   const navigate = useNavigate();
@@ -224,9 +224,15 @@ return (
 
         {/* Top Utility Icons */}
         <div className="flex items-center gap-3 md:gap-5">
-          <button className="hidden items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100 sm:flex">
-            <MapPin size={18} strokeWidth={2.5} />
-            <span className="text-sm font-medium">{userLocation}</span>
+          <button
+            type="button"
+            onClick={() => refreshLocation()}
+            disabled={isLocationLoading}
+            title="Click to update location"
+            className="hidden items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100 sm:flex disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            <MapPin size={18} strokeWidth={2.5} className={isLocationLoading ? 'animate-pulse' : ''} />
+            <span className="text-sm font-medium">{isLocationLoading ? 'Updating...' : userLocation}</span>
           </button>
 
           <button
@@ -252,10 +258,15 @@ return (
             isMobileMenuOpen ? 'translate-y-0' : '-translate-y-3'
           }`}
         >
-          <div className="mb-4 flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-3 text-sm font-medium text-slate-600">
-            <MapPin size={17} className="text-[#125fb9]" />
-            <span className="truncate">{userLocation}</span>
-          </div>
+        <button
+          type="button"
+          onClick={() => refreshLocation()}
+          disabled={isLocationLoading}
+          className="mb-4 flex w-full items-center gap-2 rounded-xl bg-slate-50 px-3 py-3 text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-70"
+        >
+          <MapPin size={17} className={`text-[#125fb9] ${isLocationLoading ? 'animate-pulse' : ''}`} />
+          <span className="truncate">{isLocationLoading ? 'Updating...' : userLocation}</span>
+        </button>
 
           <nav className="grid gap-2">
             {menuItems.map((item) => (
