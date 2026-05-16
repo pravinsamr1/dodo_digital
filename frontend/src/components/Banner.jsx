@@ -75,7 +75,7 @@ const BannerSlider = () => {
                   </p>
 
                   <div className="flex flex-wrap gap-4">
-                    <button className="bg-white text-slate-900 sm:text-[14px] px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition-transform">
+                    <button className="bg-white text-slate-900 sm:text-[12px] px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition-transform">
                       Explore Schools
                     </button>
                   </div>
