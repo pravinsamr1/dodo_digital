@@ -72,9 +72,11 @@ const SchoolDetail = () => {
         title: 'Fees Structure',
         subtitle: 'Grade-wise Annual Fees',
         items: [
-          ['Day School Fees', `₹ ${school.dayFee || 'N/A'} / year`],
-          ['Boarding Fees', `₹ ${school.boardingFee || 'N/A'} / year`],
-          ['Admission Status', school.admissionStatus || 'Open'],
+          ['Pre kg to 3 std', '₹ 45,000 / year'],
+          ['4th - 6th', '₹ 55,000 / year'],
+          ['7 to 8', '₹ 65,000 / year'],
+          ['9 to 10', '₹ 75,000 / year'],
+          ['11 - 12', '₹ 85,000 / year'],
         ],
       },
       'Extra Activities': {

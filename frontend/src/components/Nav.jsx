@@ -363,39 +363,48 @@ return (
 
           
 
-          {/* Authentication Actions */}
           <div className="hidden items-center gap-3 w-full md:flex md:w-auto">
 
-          <div className="flex items-center gap-3 md:gap-5">
-            <button
-              type="button"
-              onClick={() => refreshLocation()}
-              disabled={isLocationLoading}
-              title="Click to update location"
-              className="hidden items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100 sm:flex disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              <MapPin size={18} strokeWidth={2.5} className={isLocationLoading ? 'animate-pulse' : ''} />
-              <span className="text-sm font-medium">{isLocationLoading ? 'Updating...' : userLocation}</span>
-            </button>
-          </div>
-
-            {isAuthenticated() && getUser() ? (
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d] cursor-pointer hover:bg-[#a0083d]/20 transition-all">
-                <img
-                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getUser().name)}&background=a0083d&color=ffffff&bold=true`}
-                  alt="Profile"
-                  className="h-full w-full rounded-full object-cover shadow-sm"
-                />
-              </div>
-            ) : (
+            <div className="flex items-center gap-3 md:gap-5">
               <button
                 type="button"
-                onClick={() => openLoginModal()}
-                className="flex-1 md:flex-none bg-[#a0083d] text-white px-10 py-3 rounded-4xl text-[15px] font-[500] hover:bg-[#8a0734] transition-all active:scale-[0.98]"
+                onClick={() => refreshLocation()}
+                disabled={isLocationLoading}
+                title="Click to update location"
+                className="hidden items-center gap-2 text-slate-600 hover:text-[#125fb9] px-3 py-2 rounded-xl transition-all hover:bg-slate-100 sm:flex disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Login
+                <MapPin size={18} strokeWidth={2.5} className={isLocationLoading ? 'animate-pulse' : ''} />
+                <span className="text-sm font-medium">{isLocationLoading ? 'Updating...' : userLocation}</span>
               </button>
-            )}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => navigate('/join-partner')}
+                className="hidden lg:flex bg-white text-[#125fb9] border-2 border-[#125fb9] px-6 py-2.5 rounded-4xl text-[15px] font-[600] hover:bg-[#125fb9]/5 transition-all active:scale-[0.98]"
+              >
+                Join Partner
+              </button>
+
+              {isAuthenticated() && getUser() ? (
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d] cursor-pointer hover:bg-[#a0083d]/20 transition-all">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getUser().name)}&background=a0083d&color=ffffff&bold=true`}
+                    alt="Profile"
+                    className="h-full w-full rounded-full object-cover shadow-sm"
+                  />
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => openLoginModal()}
+                  className="bg-[#a0083d] text-white px-10 py-3 rounded-4xl text-[15px] font-[500] hover:bg-[#8a0734] transition-all active:scale-[0.98]"
+                >
+                  Login
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -482,27 +491,45 @@ return (
 
           <div className="mt-auto flex flex-col gap-4">
             {isAuthenticated() && getUser() ? (
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d]">
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getUser().name)}&background=a0083d&color=ffffff&bold=true`}
-                    alt="Profile"
-                    className="h-full w-full rounded-full object-cover shadow-sm"
-                  />
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#a0083d]/10 text-[#a0083d]">
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getUser().name)}&background=a0083d&color=ffffff&bold=true`}
+                      alt="Profile"
+                      className="h-full w-full rounded-full object-cover shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-bold text-slate-800 text-lg">{getUser().name}</p>
+                    <p className="text-sm text-slate-500 font-medium">Verified User</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold text-slate-800 text-lg">{getUser().name}</p>
-                  <p className="text-sm text-slate-500 font-medium">Verified User</p>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => { navigate('/join-partner'); setIsMobileMenuOpen(false); }}
+                  className="w-full bg-white text-[#125fb9] border-2 border-[#125fb9] px-6 py-4 rounded-2xl text-[16px] font-bold hover:bg-[#125fb9]/5 transition-all active:scale-[0.98]"
+                >
+                  Join Partner
+                </button>
               </div>
             ) : (
-              <button
-                type="button"
-                onClick={() => { openLoginModal(); setIsMobileMenuOpen(false); }}
-                className="w-full bg-[#a0083d] text-white px-6 py-4 rounded-2xl text-[16px] font-bold hover:bg-[#8a0734] transition-all active:scale-[0.98] shadow-md shadow-[#a0083d]/20"
-              >
-                Login / Register
-              </button>
+              <div className="flex flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={() => { openLoginModal(); setIsMobileMenuOpen(false); }}
+                  className="w-full bg-[#a0083d] text-white px-6 py-4 rounded-2xl text-[16px] font-bold hover:bg-[#8a0734] transition-all active:scale-[0.98] shadow-md shadow-[#a0083d]/20"
+                >
+                  Login / Register
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { navigate('/join-partner'); setIsMobileMenuOpen(false); }}
+                  className="w-full bg-white text-[#125fb9] border-2 border-[#125fb9] px-6 py-4 rounded-2xl text-[16px] font-bold hover:bg-[#125fb9]/5 transition-all active:scale-[0.98]"
+                >
+                  Join Partner
+                </button>
+              </div>
             )}
           </div>
         </div>

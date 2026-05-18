@@ -232,7 +232,7 @@ const SchoolFilter = ({ onFilterChange }) => {
       <div className="pt-5 pb-2">
         <button
           onClick={handleApply}
-          className="w-full bg-[#125fb9] text-white py-3 rounded-xl text-sm font-bold shadow-md shadow-[#125fb9]/20 transition-all hover:bg-[#0d4a91]"
+          className="w-full bg-[#125fb9] text-white py-3 rounded-md text-sm font-[400] shadow-md shadow-[#125fb9]/20 transition-all hover:bg-[#0d4a91]"
         >
           Apply Filters
         </button>

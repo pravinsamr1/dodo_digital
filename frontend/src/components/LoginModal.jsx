@@ -115,7 +115,7 @@ const LoginModal = () => {
         <button
           type="button"
           onClick={handleClose}
-          className="absolute right-4 top-4 z-[60] flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-lg backdrop-blur-md transition hover:bg-white md:right-6 md:top-6"
+          className="absolute cursor-pointer right-4 top-4 z-[60] flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-lg backdrop-blur-md transition hover:bg-white md:right-6 md:top-6"
           aria-label="Close"
         >
           <X size={20} strokeWidth={2.5} />

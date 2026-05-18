@@ -24,9 +24,6 @@ import PageSEO from '../components/PageSEO';
 const detailTabs = [
   { icon: BookOpen, label: 'Curriculum' },
   { icon: Info, label: 'Course Info' },
-  { icon: ShieldCheck, label: 'Certification' },
-  { icon: Users, label: 'Instructors' },
-  { icon: Star, label: 'Reviews' },
 ];
 
 const OnlineCourseDetail = () => {
@@ -66,37 +63,6 @@ const OnlineCourseDetail = () => {
         title: 'Course Curriculum',
         subtitle: 'Module-wise Breakdown',
         isTable: true,
-      },
-      Certification: {
-        icon: ShieldCheck,
-        title: 'Certification',
-        subtitle: 'What you get',
-        items: [
-          ['Verified Certificate', 'Get a shareable certificate upon completion'],
-          ['Industry Recognized', 'Accepted by top tech companies'],
-          ['Lifetime Access', 'Keep the materials forever'],
-          ['LMS Access', '24/7 access to our learning platform'],
-        ],
-      },
-      Instructors: {
-        icon: Users,
-        title: 'Instructors',
-        subtitle: 'Learn from the best',
-        items: [
-          ['Expert Guidance', 'Mentors from top universities'],
-          ['Doubt Clearing', 'Weekly live sessions with industry experts'],
-          ['Community Support', 'Access to exclusive student forums'],
-        ],
-      },
-      Reviews: {
-        icon: Star,
-        title: 'Reviews',
-        subtitle: 'What students say',
-        items: [
-          ['Rating', `${course.rating}/5.0`],
-          ['Trust Score', 'Highly Recommended'],
-          ['Success Stories', 'Over 1000+ alumni placed in top companies'],
-        ],
       },
     };
 
@@ -256,23 +222,7 @@ const OnlineCourseDetail = () => {
 
             {/* Right Column: Pricing & Counseling */}
             <div className="space-y-6">
-              <aside className="sticky top-24 space-y-6">
-                <div className="rounded-3xl bg-[#a0083d] p-8 text-white overflow-hidden relative">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl" />
-                  <div className="relative z-10">
-                    <p className="text-sm font-bold opacity-80 uppercase tracking-widest">Enrollment Fee</p>
-                    <div className="mt-2 flex items-baseline gap-2">
-                      <h2 className="text-5xl font-[500]">₹{course.price}</h2>
-                      <span className="text-sm font-medium opacity-80">Full Course</span>
-                    </div>
-                    <p className="mt-4 text-xs font-medium opacity-90 leading-relaxed">
-                      Includes 24/7 access, mentor support, and certification.
-                    </p>
-                    <button className="mt-8 w-full bg-white text-[#a0083d] py-4 rounded-2xl font-black text-sm uppercase tracking-widest transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                      Enroll Now
-                    </button>
-                  </div>
-                </div>
+              <aside className="sticky top-38 space-y-6">
 
                 <div className="rounded-3xl bg-white p-6 border border-slate-100">
                   <h3 className="text-xl font-[500] text-slate-900 text-center">Inquiry Form</h3>

@@ -17,6 +17,7 @@ import AbroadEducation from './Pages/AbroadEducation'
 import CollegeDetail from './Pages/CollegeDetail'
 import Institutes from './Pages/Institutes'
 import OnlineCourseDetail from './Pages/OnlineCourseDetail'
+import JoinPartner from './Pages/JoinPartner'
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
             <Route path="/abroad-education" element={<AbroadEducation/>} />
             <Route path="/institutes" element={<Institutes/>} />
             <Route path="/online-courses/:id" element={<OnlineCourseDetail/>} />
+            <Route path="/join-partner" element={<JoinPartner/>} />
           </Routes>
         </AuthModalProvider>
         <Footer />

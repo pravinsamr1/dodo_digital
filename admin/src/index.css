@@ -1,1 +1,93 @@
 @import "tailwindcss";
+
+@layer base {
+  html, body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f8fafc;
+    color: #1e293b;
+    height: 100%;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .admin-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    scrollbar-width: none;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 99px;
+  }
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .modal-animate {
+    animation: fadeSlideIn 0.2s ease-out both;
+  }
+
+  @keyframes write-action {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    15% { transform: translate(-2px, 2px) rotate(-15deg); }
+    30% { transform: translate(2px, -2px) rotate(5deg); }
+    45% { transform: translate(-2px, 2px) rotate(-15deg); }
+    60% { transform: translate(2px, -2px) rotate(5deg); }
+    75% { transform: translate(-2px, 2px) rotate(-15deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  .animate-writing {
+    animation: write-action 1.5s ease-in-out infinite;
+    transform-origin: bottom left;
+  }
+
+  @keyframes trash-action {
+    0% { transform: translateY(0) scale(1); }
+    20% { transform: translateY(-4px) scale(1.1) rotate(5deg); }
+    40% { transform: translateY(0) scale(1) rotate(-15deg); }
+    60% { transform: translateY(0) scale(1) rotate(15deg); }
+    80% { transform: translateY(0) scale(1) rotate(-15deg); }
+    100% { transform: translateY(0) scale(1) rotate(0deg); }
+  }
+
+  .animate-trashing {
+    animation: trash-action 1.2s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+}
