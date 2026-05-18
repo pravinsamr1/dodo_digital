@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 import {
   LayoutDashboard,
   School,
@@ -70,7 +71,12 @@ const Sidebar = () => {
           <span>Settings</span>
         </button>
         <button 
-          onClick={() => {
+          onClick={async () => {
+            try {
+              await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/admin/logout`, {}, { withCredentials: true });
+            } catch (err) {
+              console.error('Secure logout failed:', err);
+            }
             Cookies.remove('admin_token');
             window.location.reload();
           }}

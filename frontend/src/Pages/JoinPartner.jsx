@@ -31,7 +31,7 @@ const JoinPartner = () => {
           </div>
         </div>
 
-      <main className="flex-1 max-w-[1200px] mx-auto w-full   py-6 md:py-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+      <main className="flex-1 max-w-[1200px] mx-auto w-full pt-3 pb-13 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 ">
         
         {/* Left Side Form */}
         <div className="w-full bg-white rounded-3xl shadow-xl border border-slate-100 p-8 flex flex-col justify-center">

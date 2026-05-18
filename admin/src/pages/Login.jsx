@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 import { Lock, User, ArrowRight } from 'lucide-react';
 import logo from '../assets/logo.png';
 
@@ -9,22 +10,30 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      if (username === 'admin' && password === 'admin') {
-        // Set the admin token cookie
-        Cookies.set('admin_token', 'mock_admin_token_xyz_123', { expires: 7 }); // expires in 7 days
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/admin/login`,
+        { username, password },
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        Cookies.set('admin_token', 'true', { expires: 1 });
         onLogin();
-      } else {
-        setError('Invalid username or password. Try admin/admin');
-        setIsLoading(false);
       }
-    }, 1000);
+    } catch (err) {
+      setError(
+        err.response?.data?.error ||
+        'Invalid credentials or failed to connect to secure server.'
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

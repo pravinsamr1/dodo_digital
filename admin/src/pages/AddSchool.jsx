@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import { 
   Building2, 
   MapPin, 
@@ -116,10 +118,55 @@ const AddSchool = () => {
     setActionModal({ isOpen: true });
   };
 
+  const addSchoolMutation = useMutation({
+    mutationFn: async (schoolData) => {
+      const dataToSend = new FormData();
+      Object.keys(schoolData).forEach(key => {
+        if (key !== 'image' && key !== 'gallery') {
+          dataToSend.append(key, schoolData[key]);
+        }
+      });
+      if (schoolData.image) {
+        dataToSend.append('image', schoolData.image);
+      }
+      if (schoolData.gallery && schoolData.gallery.length > 0) {
+        schoolData.gallery.forEach(file => {
+          dataToSend.append('gallery', file);
+        });
+      }
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/admin/add-school`,
+        dataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      alert('School added successfully!');
+      setFormData({
+        name: '', location: '', city: '', latitude: '', longitude: '', type: 'Boarding', gender: 'Co-Ed',
+        board: 'CBSE', grade: '', ratio: '', languages: '', admissionStatus: 'Open', documents: '', interaction: '',
+        smartClasses: '', labs: '', library: '', sports: '', transport: '', medical: '',
+        performingArts: '', clubs: '', sportsTraining: '', outdoorTrips: '', competitions: '',
+        dayFee: '', boardingFee: '', rating: '', votes: '',
+        image: null, gallery: [], about: ''
+      });
+      setActionModal({ isOpen: false });
+    },
+    onError: (error) => {
+      console.error(error);
+      alert(error.response?.data?.error || 'Failed to add school. Please try again.');
+    }
+  });
+
   const confirmSubmit = () => {
-    console.log('Submitted Data:', formData);
-    alert('School data ready for backend submission (check console)!');
-    setActionModal({ isOpen: false });
+    addSchoolMutation.mutate(formData);
   };
 
   return (
@@ -631,13 +678,15 @@ const AddSchool = () => {
               <div className="flex flex-col gap-3 w-full">
                 <button 
                   onClick={confirmSubmit}
-                  className="w-full py-3.5 text-sm font-black text-white rounded-2xl shadow-lg transition-all active:scale-[0.98] bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/30"
+                  disabled={addSchoolMutation.isPending}
+                  className="w-full py-3.5 text-sm font-black text-white rounded-2xl shadow-lg transition-all active:scale-[0.98] bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/30 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Yes, save it!
+                  {addSchoolMutation.isPending ? 'Saving...' : 'Yes, save it!'}
                 </button>
                 <button 
                   onClick={() => setActionModal({ isOpen: false })}
-                  className="w-full py-3.5 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors"
+                  disabled={addSchoolMutation.isPending}
+                  className="w-full py-3.5 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   No, cancel
                 </button>
